@@ -61,6 +61,9 @@
           vague-nvim
           mini-icons
 
+          # Shows available keymaps as you type
+          which-key-nvim
+
           # File explorer and picker
           mini-files
           mini-pick

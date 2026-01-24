@@ -1,4 +1,14 @@
 return {
+	-- Shows available keymaps as you type
+	{
+		"which-key.nvim",
+		after = function()
+			require("which-key").setup({
+				preset = "helix",
+			})
+		end,
+	},
+
 	-- File explorer and picker
 	{
 		"mini.files",
