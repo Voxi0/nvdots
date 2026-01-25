@@ -47,13 +47,17 @@
       # Dependencies that should be available at runtime for plugins
       # Will be available to PATH within the Neovim terminal including LSPs
       lspsAndRuntimeDeps = {
-        general = with pkgs; [
-          # Language servers
-          lua-language-server
-        ] ++ (with pkgs.vimPlugins.nvim-treesitter-parsers; [
-          # Treesitter grammars for syntax highlighting
-          c nix lua
-        ]);
+        general = with pkgs;
+          [
+            # Language servers
+            lua-language-server
+          ]
+          ++ (with pkgs.vimPlugins.nvim-treesitter-parsers; [
+            # Treesitter grammars for syntax highlighting
+            c
+            nix
+            lua
+          ]);
       };
 
       # Plugins that will load at startup without using packadd
@@ -63,7 +67,7 @@
           lze
 
           # Theme, icons and statusline
-          vague-nvim
+          nightfox-nvim
           mini-icons
           lualine-nvim
 
@@ -83,6 +87,8 @@
           mini-indentscope
           mini-pairs
           mini-surround
+          lazygit-nvim
+          snacks-nvim
 
           # Miscellaneous
           cord-nvim

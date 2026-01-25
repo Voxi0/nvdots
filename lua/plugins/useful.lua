@@ -122,4 +122,20 @@ return {
 			})
 		end,
 	},
+
+	-- Snacks.nvim
+	{
+		"snacks.nvim",
+		keys = {
+			{ "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+		},
+		after = function()
+			require("snacks").setup({
+				lazygit = { enabled = true },
+				indent = { enabled = true },
+				notify = { enabled = true },
+				statuscolumn = { enabled = true },
+			})
+		end,
+	},
 }
