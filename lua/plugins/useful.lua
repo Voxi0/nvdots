@@ -7,12 +7,12 @@ require("which-key").setup({
 -- File explorer
 vim.cmd.packadd("mini.files")
 require("mini.files").setup()
-vim.keymap.set("n", "<leader>e", function() MiniFiles.open() end, {desc = "Open file explorer"})
+vim.keymap.set("n", "<leader>e", function() MiniFiles.open() end, { desc = "Open file explorer" })
 
 -- File picker
 vim.cmd.packadd("mini.pick")
-vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", {desc = "Open file picker"})
-vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", {desc = "Open buffer picker"})
+vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", { desc = "Open file picker" })
+vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Open buffer picker" })
 require("mini.pick").setup({
 	mappings = {
 		move_down = "<C-j>",
@@ -25,8 +25,8 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	once = true,
 	callback = function()
 		vim.cmd.packadd("nvim-ufo")
-		vim.keymap.set("n", "zR", function() require("ufo").openAllFolds() end, {desc = "Open all folds"})
-		vim.keymap.set("n", "zM", function() require("ufo").closeAllFolds() end, {desc = "Close all folds"})
+		vim.keymap.set("n", "zR", function() require("ufo").openAllFolds() end, { desc = "Open all folds" })
+		vim.keymap.set("n", "zM", function() require("ufo").closeAllFolds() end, { desc = "Close all folds" })
 		require("ufo").setup({
 			provider_selector = function(bufnr, filetype, buftype)
 				return { "treesitter", "indent" }
@@ -68,7 +68,7 @@ require("mini.pairs").setup({
 })
 
 -- Snacks.nvim
-vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, {desc = "Open LazyGit"})
+vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, { desc = "Open LazyGit" })
 require("snacks").setup({
 	lazygit = { enabled = true },
 	indent = { enabled = true },
@@ -78,7 +78,23 @@ require("snacks").setup({
 		enabled = true,
 		sections = {
 			{ section = "header" },
-			{ section = "keys",   gap = 1, padding = 1 },
+			{ section = "keys",  gap = 1, padding = 1 },
 		},
 	},
+})
+
+-- Show LSP loading progress
+vim.api.nvim_create_autocmd("LspProgress", {
+	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+		vim.notify(vim.lsp.status(), "info", {
+			id = "lsp_progress",
+			title = client.name,
+			opts = function(notif)
+				notif.icon = ev.data.params.value.kind == "end" and " "
+					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+			end,
+		})
+	end,
 })
