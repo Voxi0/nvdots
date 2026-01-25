@@ -62,9 +62,10 @@
           # Plugin manager
           lze
 
-          # Theme and icons
+          # Theme, icons and statusline
           vague-nvim
           mini-icons
+          lualine-nvim
 
           # Shows available keymaps as you type
           which-key-nvim
