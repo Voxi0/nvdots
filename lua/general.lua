@@ -62,3 +62,8 @@ vim.g.startuptime_exe_path = nixCats.packageBinPath
 ---------------------
 ----- Disable auto comments
 vim.cmd([[autocmd FileType * set formatoptions-=ro]])
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function() vim.hl.on_yank() end
+})
