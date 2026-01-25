@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs = {
@@ -127,13 +128,13 @@
         ...
       }: {
         settings = {
+          neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
           suffix-path = true;
           suffix-LD = true;
           wrapRc = true;
 
           # Ensure your alias doesn't conflict with your other packages.
           aliases = ["vim"];
-          # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
         };
 
         # Set of categories that you want and other information to pass to Lua
