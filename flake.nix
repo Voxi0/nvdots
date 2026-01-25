@@ -52,6 +52,7 @@
 
             # Extra dependencies
             ripgrep
+            wakatime-cli
           ]
           ++ (with pkgs.vimPlugins.nvim-treesitter-parsers; [
             # Treesitter grammars for syntax highlighting
@@ -96,6 +97,9 @@
           nvim-ufo
           mini-pairs
           mini-surround
+
+          # Miscellaneous
+          vim-wakatime
         ];
       };
 

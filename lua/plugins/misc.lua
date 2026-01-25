@@ -40,3 +40,7 @@ require("cord").setup {
 		terminal = function(opts) return "Running commands in " .. opts.name end,
 	},
 }
+
+-- Wakatime to track your coding time
+-- I personally need this to interface with Hackatime
+vim.cmd.packadd("vim-wakatime")
