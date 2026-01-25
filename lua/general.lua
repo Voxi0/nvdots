@@ -1,3 +1,11 @@
+--------------------
+--- Code folding ---
+--------------------
+vim.o.foldenable = true
+vim.o.foldcolumn = "1"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+
 ----------------
 -- Searching ---
 ----------------
@@ -45,3 +53,9 @@ vim.o.spell = true
 
 -- File encoding
 vim.o.encoding = "UTF-8"
+
+---------------------
+--- Auto-commands ---
+---------------------
+----- Disable auto comments
+vim.cmd([[autocmd FileType * set formatoptions-=ro]])

@@ -55,25 +55,33 @@ return {
 		end,
 	},
 
-	-- Indentation guides
+	-- Code folding
 	{
-		"mini.indentscope",
+		"nvim-ufo",
 		event = "InsertEnter",
 		keys = {
 			{
-				"<leader>ib",
+				"zR",
 				mode = { "n" },
-				desc = "Toggle indentation guides",
+				desc = "Open all folds",
 				function()
-					vim.g.miniindentscope_disable = not vim.g.miniindentscope_disable
+					require("ufo").openAllFolds()
 				end,
-			}
+			},
+			{
+				"zM",
+				mode = { "n" },
+				desc = "Close all folds",
+				function()
+					require("ufo").closeAllFolds()
+				end,
+			},
 		},
 		after = function()
-			require("mini.indentscope").setup({
-				draw = {
-					animation = require("mini.indentscope").gen_animation.none(),
-				},
+			require("ufo").setup({
+				provider_selector = function(bufnr, filetype, buftype)
+					return { "treesitter", "indent" }
+				end
 			})
 		end,
 	},
