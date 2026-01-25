@@ -19,16 +19,14 @@
 
     # Extra configuration for nixpkgs
     # Won't apply to module imports as that holds your system values
-    extra_pkg_config = {
-      allowUnfree = true;
-    };
+    extra_pkg_config.allowUnfree = true;
 
     dependencyOverlays = [
-      # Grabs all flake inputs that is named in the format `plugins-<plugin name>`
-      # This overlay is added to nixpkgs after which we can use `pkgs.neovimPlugins`
+      # Grab all flake inputs named in the format -> `plugins-<plugin name>`
+      # This overlay is added to nixpkgs so we can use the custom plugins from `pkgs.neovimPlugins`
       (utils.standardPluginOverlay inputs)
 
-      # Run this function on someone's overlay if they messed it up by wrapping it with system
+      # Run this function on an overlay if it's wrapped with system
       # This checks if the system in the set is available and returns the desired overlay if so
       # (utils.fixSystemizedOverlay inputs.codeium.overlays
       #   (system: inputs.codeium.overlays.${system}.default)
@@ -51,6 +49,9 @@
           [
             # Language servers
             lua-language-server
+
+            # Extra dependencies
+            ripgrep
           ]
           ++ (with pkgs.vimPlugins.nvim-treesitter-parsers; [
             # Treesitter grammars for syntax highlighting
@@ -60,34 +61,10 @@
           ]);
       };
 
-      # Plugins that will load at startup without using packadd
+      # Plugins that are loaded at startup without using packadd
       startupPlugins = {
         general = with pkgs.vimPlugins; [
-          # Plugin manager
-          lze
-
-          # Theme, icons and statusline
-          nightfox-nvim
-          mini-icons
-          lualine-nvim
-
-          # Shows available keymaps as you type
-          which-key-nvim
-
-          # File explorer and picker
-          mini-files
-          mini-pick
-
-          # Syntax highlighting and autocompletion
-          nvim-treesitter
-          blink-cmp
-
           # Quality of life
-          nvim-ufo
-          mini-indentscope
-          mini-pairs
-          mini-surround
-          lazygit-nvim
           snacks-nvim
 
           # Miscellaneous
@@ -98,7 +75,28 @@
       # Plugins that aren't loaded automatically at startup
       # Use with packadd and an autocommand in config to achieve lazy loading
       optionalPlugins = {
-        general = with pkgs.vimPlugins; [];
+        general = with pkgs.vimPlugins; [
+          # Theme, icons and statusline
+          nightfox-nvim
+          mini-icons
+          lualine-nvim
+
+          # Syntax highlighting and autocompletion
+          nvim-treesitter
+          blink-cmp
+
+          # Shows available keymaps as you type
+          which-key-nvim
+
+          # File explorer and picker
+          mini-files
+          mini-pick
+
+          # Quality of life
+          nvim-ufo
+          mini-pairs
+          mini-surround
+        ];
       };
 
       # Shared libraries to be added to LD_LIBRARY_PATH variable available to Neovim runtime
@@ -124,24 +122,20 @@
     };
 
     # Default package entry to use from `packageDefinitions`
-    defaultPackageName = "nvim";
+    defaultPackageName = "unstable";
 
     # Build packages with specific categories from above here
     # This entire set is also passed to nixCats for querying within Lua
-    packageDefinitions = {
-      nvim = {
-        pkgs,
-        name,
-        ...
-      }: {
+    packageDefinitions = let
+      mkNvimPackage = neovimPkg: {
         settings = {
-          neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+          neovim-unwrapped = neovimPkg;
           suffix-path = true;
           suffix-LD = true;
           wrapRc = true;
 
           # Ensure your alias doesn't conflict with your other packages.
-          aliases = ["vim"];
+          aliases = ["vi" "vim"];
         };
 
         # Set of categories that you want and other information to pass to Lua
@@ -149,6 +143,19 @@
           general = true;
         };
       };
+    in {
+      stable = {
+        pkgs,
+        name,
+        ...
+      }:
+        mkNvimPackage pkgs.neovim-unwrapped;
+      unstable = {
+        pkgs,
+        name,
+        ...
+      }:
+        mkNvimPackage inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
     };
   in
     forEachSystem (system: let

@@ -54,6 +54,9 @@ vim.o.spell = true
 -- File encoding
 vim.o.encoding = "UTF-8"
 
+-- nixCats specific stuff
+vim.g.startuptime_exe_path = nixCats.packageBinPath
+
 ---------------------
 --- Auto-commands ---
 ---------------------

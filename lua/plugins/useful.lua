@@ -1,141 +1,84 @@
-return {
-	-- Shows available keymaps as you type
-	{
-		"which-key.nvim",
-		after = function()
-			require("which-key").setup({
-				preset = "helix",
-			})
-		end,
-	},
+-- Shows available keymaps as you type
+vim.cmd.packadd("which-key.nvim")
+require("which-key").setup({
+	preset = "helix",
+})
 
-	-- File explorer and picker
-	{
-		"mini.files",
-		keys = {
-			{
-				"<leader>e",
-				mode = { "n" },
-				desc = "Open file explorer",
-				function()
-					MiniFiles.open()
-				end,
-			},
+-- File explorer
+vim.cmd.packadd("mini.files")
+require("mini.files").setup()
+vim.keymap.set("n", "<leader>e", function() MiniFiles.open() end, {desc = "Open file explorer"})
+
+-- File picker
+vim.cmd.packadd("mini.pick")
+vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", {desc = "Open file picker"})
+vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", {desc = "Open buffer picker"})
+require("mini.pick").setup({
+	mappings = {
+		move_down = "<C-j>",
+		move_up = "<C-k>",
+	},
+})
+
+-- Code folding
+vim.api.nvim_create_autocmd("InsertEnter", {
+	once = true,
+	callback = function()
+		vim.cmd.packadd("nvim-ufo")
+		vim.keymap.set("n", "zR", function() require("ufo").openAllFolds() end, {desc = "Open all folds"})
+		vim.keymap.set("n", "zM", function() require("ufo").closeAllFolds() end, {desc = "Close all folds"})
+		require("ufo").setup({
+			provider_selector = function(bufnr, filetype, buftype)
+				return { "treesitter", "indent" }
+			end
+		})
+	end,
+})
+
+-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
+vim.api.nvim_create_autocmd("InsertEnter", {
+	once = true,
+	callback = function()
+		vim.cmd.packadd("mini.surround")
+		require("mini.surround").setup()
+	end,
+})
+
+-- Autopairing
+vim.cmd.packadd("mini.pairs")
+require("mini.pairs").setup({
+	modes = { insert = true, command = true, terminal = true },
+	mappings = {
+		['('] = { action = "open", pair = "()", neigh_pattern = "^[^\\]" },
+		[')'] = { action = "close", pair = "()", neigh_pattern = "^[^\\]" },
+
+		['['] = { action = "open", pair = "[]", neigh_pattern = "^[^\\]" },
+		[']'] = { action = "close", pair = "[]", neigh_pattern = "^[^\\]" },
+
+		['{'] = { action = "open", pair = "{}", neigh_pattern = "^[^\\]" },
+		['}'] = { action = "close", pair = "{}", neigh_pattern = "^[^\\]" },
+
+		['<'] = { action = "open", pair = "<>", neigh_pattern = "[%a:]." },
+		['>'] = { action = "close", pair = "<>", neigh_pattern = "[^\\]." },
+
+		['"'] = { action = "closeopen", pair = '""', neigh_pattern = "^[^\\]", register = { cr = false } },
+		["'"] = { action = "closeopen", pair = "''", neigh_pattern = "^[^%a\\]", register = { cr = false } },
+		['`'] = { action = "closeopen", pair = "``", neigh_pattern = "^[^\\]", register = { cr = false } },
+	},
+})
+
+-- Snacks.nvim
+vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, {desc = "Open LazyGit"})
+require("snacks").setup({
+	lazygit = { enabled = true },
+	indent = { enabled = true },
+	notifier = { enabled = true },
+	statuscolumn = { enabled = true },
+	dashboard = {
+		enabled = true,
+		sections = {
+			{ section = "header" },
+			{ section = "keys",   gap = 1, padding = 1 },
 		},
-		after = function()
-			require("mini.files").setup()
-		end,
 	},
-	{
-		"mini.pick",
-		keys = {
-			-- Find file
-			{
-				"<leader>ff",
-				mode = { "n" },
-				desc = "Open file picker",
-				"<cmd>Pick files<cr>"
-			},
-
-			-- Find buffer
-			{
-				"<leader>fb",
-				mode = { "n" },
-				desc = "Open buffer picker",
-				"<cmd>Pick buffers<cr>"
-			}
-		},
-		after = function()
-			require("mini.pick").setup({
-				mappings = {
-					move_down = "<C-j>",
-					move_up = "<C-k>",
-				},
-			})
-		end,
-	},
-
-	-- Code folding
-	{
-		"nvim-ufo",
-		event = "InsertEnter",
-		keys = {
-			{
-				"zR",
-				mode = { "n" },
-				desc = "Open all folds",
-				function()
-					require("ufo").openAllFolds()
-				end,
-			},
-			{
-				"zM",
-				mode = { "n" },
-				desc = "Close all folds",
-				function()
-					require("ufo").closeAllFolds()
-				end,
-			},
-		},
-		after = function()
-			require("ufo").setup({
-				provider_selector = function(bufnr, filetype, buftype)
-					return { "treesitter", "indent" }
-				end
-			})
-		end,
-	},
-
-	-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
-	{
-		"mini.surround",
-		event = "InsertEnter",
-		after = function()
-			require("mini.surround").setup()
-		end,
-	},
-
-	-- Autopairing
-	{
-		"mini.pairs",
-		event = "InsertEnter",
-		after = function()
-			require("mini.pairs").setup({
-				modes = { insert = true, command = true, terminal = true },
-				mappings = {
-					['('] = { action = "open", pair = "()", neigh_pattern = "^[^\\]" },
-					[')'] = { action = "close", pair = "()", neigh_pattern = "^[^\\]" },
-
-					['['] = { action = "open", pair = "[]", neigh_pattern = "^[^\\]" },
-					[']'] = { action = "close", pair = "[]", neigh_pattern = "^[^\\]" },
-
-					['{'] = { action = "open", pair = "{}", neigh_pattern = "^[^\\]" },
-					['}'] = { action = "close", pair = "{}", neigh_pattern = "^[^\\]" },
-
-					['<'] = { action = "open", pair = "<>", neigh_pattern = "[%a:]." },
-					['>'] = { action = "close", pair = "<>", neigh_pattern = "[^\\]." },
-
-					['"'] = { action = "closeopen", pair = '""', neigh_pattern = "^[^\\]", register = { cr = false } },
-					["'"] = { action = "closeopen", pair = "''", neigh_pattern = "^[^%a\\]", register = { cr = false } },
-					['`'] = { action = "closeopen", pair = "``", neigh_pattern = "^[^\\]", register = { cr = false } },
-				},
-			})
-		end,
-	},
-
-	-- Snacks.nvim
-	{
-		"snacks.nvim",
-		keys = {
-			{ "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-		},
-		after = function()
-			require("snacks").setup({
-				lazygit = { enabled = true },
-				indent = { enabled = true },
-				notify = { enabled = true },
-				statuscolumn = { enabled = true },
-			})
-		end,
-	},
-}
+})
