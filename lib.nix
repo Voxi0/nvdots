@@ -84,9 +84,6 @@
             mini-pairs
             mini-surround
           ];
-          misc = with pkgs.vimPlugins; [
-            vim-wakatime
-          ];
         };
       };
     };

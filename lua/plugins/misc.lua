@@ -64,7 +64,3 @@ require("cord").setup({
 		end,
 	},
 })
-
--- Wakatime to track your coding time
--- I personally need this to interface with Hackatime
-vim.cmd.packadd("vim-wakatime")
