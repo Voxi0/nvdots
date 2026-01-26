@@ -7,7 +7,9 @@ require("which-key").setup({
 -- File explorer
 vim.cmd.packadd("mini.files")
 require("mini.files").setup()
-vim.keymap.set("n", "<leader>e", function() MiniFiles.open() end, { desc = "Open file explorer" })
+vim.keymap.set("n", "<leader>e", function()
+	MiniFiles.open()
+end, { desc = "Open file explorer" })
 
 -- File picker
 vim.cmd.packadd("mini.pick")
@@ -25,12 +27,16 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	once = true,
 	callback = function()
 		vim.cmd.packadd("nvim-ufo")
-		vim.keymap.set("n", "zR", function() require("ufo").openAllFolds() end, { desc = "Open all folds" })
-		vim.keymap.set("n", "zM", function() require("ufo").closeAllFolds() end, { desc = "Close all folds" })
+		vim.keymap.set("n", "zR", function()
+			require("ufo").openAllFolds()
+		end, { desc = "Open all folds" })
+		vim.keymap.set("n", "zM", function()
+			require("ufo").closeAllFolds()
+		end, { desc = "Close all folds" })
 		require("ufo").setup({
 			provider_selector = function(bufnr, filetype, buftype)
 				return { "treesitter", "indent" }
-			end
+			end,
 		})
 	end,
 })
@@ -49,26 +55,28 @@ vim.cmd.packadd("mini.pairs")
 require("mini.pairs").setup({
 	modes = { insert = true, command = true, terminal = true },
 	mappings = {
-		['('] = { action = "open", pair = "()", neigh_pattern = "^[^\\]" },
-		[')'] = { action = "close", pair = "()", neigh_pattern = "^[^\\]" },
+		["("] = { action = "open", pair = "()", neigh_pattern = "^[^\\]" },
+		[")"] = { action = "close", pair = "()", neigh_pattern = "^[^\\]" },
 
-		['['] = { action = "open", pair = "[]", neigh_pattern = "^[^\\]" },
-		[']'] = { action = "close", pair = "[]", neigh_pattern = "^[^\\]" },
+		["["] = { action = "open", pair = "[]", neigh_pattern = "^[^\\]" },
+		["]"] = { action = "close", pair = "[]", neigh_pattern = "^[^\\]" },
 
-		['{'] = { action = "open", pair = "{}", neigh_pattern = "^[^\\]" },
-		['}'] = { action = "close", pair = "{}", neigh_pattern = "^[^\\]" },
+		["{"] = { action = "open", pair = "{}", neigh_pattern = "^[^\\]" },
+		["}"] = { action = "close", pair = "{}", neigh_pattern = "^[^\\]" },
 
-		['<'] = { action = "open", pair = "<>", neigh_pattern = "[%a:]." },
-		['>'] = { action = "close", pair = "<>", neigh_pattern = "[^\\]." },
+		["<"] = { action = "open", pair = "<>", neigh_pattern = "[%a:]." },
+		[">"] = { action = "close", pair = "<>", neigh_pattern = "[^\\]." },
 
 		['"'] = { action = "closeopen", pair = '""', neigh_pattern = "^[^\\]", register = { cr = false } },
 		["'"] = { action = "closeopen", pair = "''", neigh_pattern = "^[^%a\\]", register = { cr = false } },
-		['`'] = { action = "closeopen", pair = "``", neigh_pattern = "^[^\\]", register = { cr = false } },
+		["`"] = { action = "closeopen", pair = "``", neigh_pattern = "^[^\\]", register = { cr = false } },
 	},
 })
 
 -- Snacks.nvim
-vim.keymap.set("n", "<leader>gg", function() Snacks.lazygit() end, { desc = "Open LazyGit" })
+vim.keymap.set("n", "<leader>gg", function()
+	Snacks.lazygit()
+end, { desc = "Open LazyGit" })
 require("snacks").setup({
 	lazygit = { enabled = true },
 	indent = { enabled = true },
@@ -78,7 +86,7 @@ require("snacks").setup({
 		enabled = true,
 		sections = {
 			{ section = "header" },
-			{ section = "keys",  gap = 1, padding = 1 },
+			{ section = "keys", gap = 1, padding = 1 },
 		},
 	},
 })

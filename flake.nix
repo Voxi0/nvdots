@@ -175,6 +175,7 @@
         categoryDefinitions
         packageDefinitions;
       defaultPackage = nixCatsBuilder defaultPackageName;
+
       # This is for using utils such as `pkgs.mkShell`
       # The one used to build Neovim is resolved inside the builder and is passed to our `categoryDefinitions` and `packageDefinitions`
       pkgs = import nixpkgs {inherit system;};
@@ -184,6 +185,7 @@
       packages = utils.mkAllWithDefault defaultPackage;
 
       # Choose your package for the devShell and add whatever else you want in it
+      formatter = pkgs.stylua;
       devShells = {
         default = pkgs.mkShell {
           name = defaultPackageName;
