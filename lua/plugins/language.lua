@@ -27,11 +27,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
 				treesitterTryAttach(buffer, language)
 
 				-- if not treesitterTryAttach(buffer,language) then
-				-- 	-- Try installing parser via `nvim-treesitter` if not available
-				-- 	if vim.tbl_contains(require("nvim-treesitter").get_available(), language) then
-				-- 		require("nvim-treesitter").install(language):await(function()
-				-- 		treesitterTryAttach(buf, language)
-				-- 	end
+				--	-- Try installing parser via `nvim-treesitter` if not available
+				--	if vim.tbl_contains(require("nvim-treesitter").get_available(), language) then
+				--		require("nvim-treesitter").install(language):await(function()
+				--		treesitterTryAttach(buf, language)
+				--	end
 				-- end
 			end,
 		})
