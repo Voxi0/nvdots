@@ -45,62 +45,67 @@
       # Dependencies that should be available at runtime for plugins
       # Will be available to PATH within the Neovim terminal including LSPs
       lspsAndRuntimeDeps = {
-        general = with pkgs;
-          [
-            # Language servers
-            lua-language-server
-
-            # Extra dependencies
+        general = {
+          # Dependencies
+          deps = with pkgs; [
             ripgrep
             wakatime-cli
-          ]
-          ++ (with pkgs.vimPlugins.nvim-treesitter-parsers; [
-            # Treesitter grammars for syntax highlighting
+          ];
+
+          # Language servers
+          lsp = with pkgs; [
+            lua-language-server
+          ];
+
+          # Treesitter grammars for syntax highlighting
+          treesitterParsers = with pkgs.vimPlugins.nvim-treesitter-parsers; [
             c
             nix
             lua
-          ]);
+          ];
+        };
       };
 
       # Plugins that are loaded at startup without using packadd
       startupPlugins = {
-        general = with pkgs.vimPlugins; [
-          # Quality of life
-          snacks-nvim
-
-          # Miscellaneous
-          cord-nvim
-        ];
+        general = {
+          qualityOfLife = with pkgs.vimPlugins; [snacks-nvim];
+          misc = with pkgs.vimPlugins; [cord-nvim];
+        };
       };
 
       # Plugins that aren't loaded automatically at startup
       # Use with packadd and an autocommand in config to achieve lazy loading
       optionalPlugins = {
-        general = with pkgs.vimPlugins; [
-          # Theme, icons and statusline
-          nightfox-nvim
-          mini-icons
-          lualine-nvim
+        general = {
+          ui = with pkgs.vimPlugins; [
+            # Theme, icons and statusline
+            nightfox-nvim
+            mini-icons
+            lualine-nvim
+          ];
+          core = with pkgs.vimPlugins; [
+            # Syntax highlighting and autocompletion
+            nvim-treesitter
+            blink-cmp
+          ];
+          qualityOfLife = with pkgs.vimPlugins; [
+            # Shows available keymaps as you type
+            which-key-nvim
 
-          # Syntax highlighting and autocompletion
-          nvim-treesitter
-          blink-cmp
+            # File explorer and picker
+            mini-files
+            mini-pick
 
-          # Shows available keymaps as you type
-          which-key-nvim
-
-          # File explorer and picker
-          mini-files
-          mini-pick
-
-          # Quality of life
-          nvim-ufo
-          mini-pairs
-          mini-surround
-
-          # Miscellaneous
-          vim-wakatime
-        ];
+            # Quality of life
+            nvim-ufo
+            mini-pairs
+            mini-surround
+          ];
+          misc = with pkgs.vimPlugins; [
+            vim-wakatime
+          ];
+        };
       };
 
       # Shared libraries to be added to LD_LIBRARY_PATH variable available to Neovim runtime
