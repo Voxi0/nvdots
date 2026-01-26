@@ -10,6 +10,3 @@ This is my personal [Neovim](https://neovim.io/) configuration.
   Check the website to learn why it would be better compared to alternatives
   such as [NVF](https://github.com/notAShelf/nvf) and
   [Nixvim](https://github.com/nix-community/nixvim)
-
-- [lze](github.com/BirdeeHub/lze) - Lazy-loading library that is being used to
-  load and configure plugins
