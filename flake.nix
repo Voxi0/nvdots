@@ -17,6 +17,7 @@
     in {
       imports = [./lib.nix];
 
+			# Export NixOS and Home Manager modules along with overlays
       flake = {
         # These outputs will not be wrapped with `${system}`
         # This will make an overlay out of each of the `packageDefinitions` defined above and set the default overlay to the one named here
@@ -58,7 +59,7 @@
         };
       };
 
-      # Export packages and create a development environment for all platforms
+      # Export packages and create a development environment for all supported platforms
       systems = import inputs.systems;
       perSystem = {
         pkgs,
@@ -77,8 +78,8 @@
           self.lib.categoryDefinitions
           self.lib.packageDefinitions;
       in {
-        # These outputs will be wrapped with `${system}` by `utils.eachSystem`
-        # This makes a package of each entry in `packageDefinitions` and sets the default package to the one passed in here
+        # These outputs are wrapped with `${system}` by `utils.eachSystem`
+        # This makes a package for each entry in `packageDefinitions` and sets the default package
         packages = utils.mkAllWithDefault defaultPackage;
 
         # Development environment

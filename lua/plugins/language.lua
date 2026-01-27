@@ -59,7 +59,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 
 				-- Accept or cancel suggestion
 				["<CR>"] = { "accept", "fallback" },
-				["<Escape>"] = { "cancel", "fallback" },
 			},
 		})
 	end,
