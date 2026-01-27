@@ -90,30 +90,31 @@
 
     # Define packages with specific categories of plugins enabled
     # Basically variants of your configuration I guess
-    defaultPkgName = "unstable";
+    defaultPkgName = "nvdots-unstable";
     packageDefinitions = let
-      mkNvimPackage = {
-        settings = {
-          suffix-path = true;
-          suffix-LD = true;
-          wrapRc = true;
+      settings = {
+        suffix-path = true;
+        suffix-LD = true;
+        wrapRc = true;
 
-          # Ensure your alias doesn't conflict with your other packages.
-          aliases = ["vi" "vim"];
-        };
+        # Ensure your alias doesn't conflict with your other packages.
+        aliases = ["vi" "vim"];
+      };
 
-        # Set of categories that you want and other information to pass to Lua
-        categories = {
-          general = true;
-        };
+      # Set of categories that you want and other information to pass to Lua
+      categories = {
+        general = true;
       };
     in {
-      stable = mkNvimPackage;
-      unstable = {pkgs, ...}:
-        mkNvimPackage
-        // {
-          settings.neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
-        };
+      nvdots-stable = {pkgs, ...}: {inherit categories settings;};
+      nvdots-unstable = {pkgs, ...}: {
+        inherit categories;
+        settings =
+          settings
+          // {
+            neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+          };
+      };
     };
   };
 }

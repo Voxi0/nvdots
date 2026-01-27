@@ -17,8 +17,37 @@
     in {
       imports = [./lib.nix];
 
-			# Export NixOS and Home Manager modules along with overlays
-      flake = {
+      # Export NixOS and Home Manager modules along with overlays
+      flake = let
+        # we also export a nixos module to allow reconfiguration from configuration.nix
+        nixosModule = utils.mkNixosModules {
+          moduleNamespace = [self.lib.defaultPkgName];
+          inherit nixpkgs;
+          inherit
+            (self.lib)
+            defaultPkgName
+            dependencyOverlays
+            luaPath
+            categoryDefinitions
+            packageDefinitions
+            extraPkgConfig
+            ;
+        };
+        # and the same for home manager
+        homeModule = utils.mkHomeModules {
+          moduleNamespace = [self.lib.defaultPkgName];
+          inherit nixpkgs;
+          inherit
+            (self.lib)
+            defaultPkgName
+            dependencyOverlays
+            luaPath
+            categoryDefinitions
+            packageDefinitions
+            extraPkgConfig
+            ;
+        };
+      in {
         # These outputs will not be wrapped with `${system}`
         # This will make an overlay out of each of the `packageDefinitions` defined above and set the default overlay to the one named here
         overlays =
@@ -31,32 +60,11 @@
           self.lib.defaultPkgName;
 
         # Export NixOS and Home Manager modules
-        nixosModules.default = utils.mkNixosModules {
-          moduleNamespace = [self.lib.defaultPkgName];
-          inherit nixpkgs;
-          inherit
-            (self.lib)
-            defaultPkgName
-            dependencyOverlays
-            luaPath
-            categoryDefinitions
-            packageDefinitions
-            extraPkgConfig
-            ;
-        };
-        homeModules.default = utils.mkHomeModules {
-          moduleNamespace = [self.lib.defaultPkgName];
-          inherit nixpkgs;
-          inherit
-            (self.lib)
-            defaultPkgName
-            dependencyOverlays
-            luaPath
-            categoryDefinitions
-            packageDefinitions
-            extraPkgConfig
-            ;
-        };
+        nixosModules.default = nixosModule;
+        homeModules.default = homeModule;
+
+        inherit nixosModule homeModule;
+        inherit (inputs.nixCats) utils;
       };
 
       # Export packages and create a development environment for all supported platforms
