@@ -1,3 +1,9 @@
+-- Shows available keymaps as you type
+vim.cmd.packadd("which-key.nvim")
+require("which-key").setup({
+	preset = "helix",
+})
+
 -----------------------
 --- Generic keymaps ---
 -----------------------

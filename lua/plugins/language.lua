@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 
 				-- Accept or cancel suggestion
-				["<CR>"] = { "accept", "fallback" },
+				["<Tab>"] = { "accept", "fallback" },
 			},
 		})
 	end,

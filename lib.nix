@@ -31,7 +31,6 @@
           # Dependencies
           deps = with pkgs; [
             ripgrep
-            wakatime-cli
           ];
 
           # Language servers
@@ -83,6 +82,7 @@
             nvim-ufo
             mini-pairs
             mini-surround
+            mini-sessions
           ];
         };
       };
@@ -90,7 +90,7 @@
 
     # Define packages with specific categories of plugins enabled
     # Basically variants of your configuration I guess
-    defaultPkgName = "nvdots-unstable";
+    defaultPkgName = "nvdots";
     packageDefinitions = let
       settings = {
         suffix-path = true;
@@ -106,8 +106,11 @@
         general = true;
       };
     in {
-      nvdots-stable = {pkgs, ...}: {inherit categories settings;};
-      nvdots-unstable = {pkgs, ...}: {
+      # Stable
+      nvdots = {pkgs, ...}: {inherit categories settings;};
+
+      # Nightly release (Unstable)
+      unstable = {pkgs, ...}: {
         inherit categories;
         settings =
           settings

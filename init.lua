@@ -1,9 +1,9 @@
-require("general")
 require("ui")
+require("general")
 require("mappings")
 
 -- Plugins
-require("plugins.ui")
-require("plugins.useful")
+require("plugins.mini")
+require("plugins.snacks")
 require("plugins.language")
 require("plugins.misc")

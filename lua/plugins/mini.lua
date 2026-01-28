@@ -1,9 +1,3 @@
--- Shows available keymaps as you type
-vim.cmd.packadd("which-key.nvim")
-require("which-key").setup({
-	preset = "helix",
-})
-
 -- File explorer
 vim.cmd.packadd("mini.files")
 require("mini.files").setup()
@@ -13,14 +7,14 @@ end, { desc = "Open file explorer" })
 
 -- File picker
 vim.cmd.packadd("mini.pick")
-vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", { desc = "Open file picker" })
-vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Open buffer picker" })
 require("mini.pick").setup({
 	mappings = {
 		move_down = "<C-j>",
 		move_up = "<C-k>",
 	},
 })
+vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", { desc = "Open file picker" })
+vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Open buffer picker" })
 
 -- Code folding
 vim.api.nvim_create_autocmd("InsertEnter", {
@@ -73,36 +67,18 @@ require("mini.pairs").setup({
 	},
 })
 
--- Snacks.nvim
-vim.keymap.set("n", "<leader>gg", function()
-	Snacks.lazygit()
-end, { desc = "Open LazyGit" })
-require("snacks").setup({
-	lazygit = { enabled = true },
-	indent = { enabled = true },
-	notifier = { enabled = true },
-	statuscolumn = { enabled = true },
-	dashboard = {
-		enabled = true,
-		sections = {
-			{ section = "header" },
-			{ section = "keys", gap = 1, padding = 1 },
-		},
-	},
-})
+-- Session management
+vim.cmd.packadd("mini.sessions")
+require("mini.sessions").setup({
+	autoread = false,
+	autowrite = true,
 
--- Show LSP loading progress
-vim.api.nvim_create_autocmd("LspProgress", {
-	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-		vim.notify(vim.lsp.status(), "info", {
-			id = "lsp_progress",
-			title = client.name,
-			opts = function(notif)
-				notif.icon = ev.data.params.value.kind == "end" and " "
-					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-			end,
-		})
-	end,
+	-- File for local session
+	file = "Session.vim",
+
+	-- Whether to print session path after action
+	verbose = { read = false, write = true, delete = true },
 })
+vim.keymap.set("n", "<leader>ls", function()
+	MiniSessions.read()
+end, { desc = "Read session" })
