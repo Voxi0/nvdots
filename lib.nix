@@ -98,7 +98,7 @@
         wrapRc = true;
 
         # Ensure your alias doesn't conflict with your other packages.
-        aliases = ["vi" "vim"];
+        aliases = ["nvim"];
       };
 
       # Set of categories that you want and other information to pass to Lua
