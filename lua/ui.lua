@@ -34,9 +34,6 @@ vim.o.termguicolors = true
 vim.o.number = true
 vim.o.relativenumber = true
 
--- Highlight current line
-vim.o.cursorline = true
-
 -- Always show signcolumn so the text doesn't shift whenever you start/stop typing
 vim.o.signcolumn = "yes"
 
