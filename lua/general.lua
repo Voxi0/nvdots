@@ -1,61 +1,71 @@
---------------------
---- Code folding ---
---------------------
-vim.o.foldenable = true
-vim.o.foldcolumn = "1"
-vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
+local options = {
+	--------------------
+	--- Code folding ---
+	--------------------
+	foldenable = true,
+	foldcolumn = "1",
+	foldlevel = 99,
+	foldlevelstart = 99,
 
-----------------
--- Searching ---
-----------------
--- Case insensitive search unless search includes an uppercase character
-vim.o.ignorecase = true
-vim.o.smartcase = true
+	----------------
+	-- Searching ---
+	----------------
+	-- Case insensitive search unless search includes an uppercase character
+	ignorecase = true,
+	smartcase = true,
 
--- Highlight search results
-vim.o.hlsearch = true
+	-- Highlight search results
+	hlsearch = true,
 
--- Show matches as you type
-vim.o.incsearch = true
+	-- Show matches as you type
+	incsearch = true,
 
----------------------
---- File handling ---
----------------------
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.swapfile = false
-vim.o.undofile = true
-vim.o.undodir = vim.fn.expand("~/.vim/undodir")
-vim.o.autoread = true
-vim.o.autowrite = false
+	---------------------
+	--- File handling ---
+	---------------------
+	backup = false,
+	writebackup = false,
+	swapfile = false,
+	undofile = true,
+	undodir = vim.fn.expand("~/.vim/undodir"),
+	autoread = true,
+	autowrite = false,
 
--------------------
---- Performance ---
--------------------
--- Faster completion
-vim.o.updatetime = 300
+	-------------------
+	--- Performance ---
+	-------------------
+	-- Faster completion
+	updatetime = 300,
 
--- Don't redraw during macros
-vim.o.lazyredraw = true
+	-- Don't redraw during macros
+	lazyredraw = true,
 
----------------------
---- Miscellaneous ---
----------------------
--- Enable mouse support
-vim.o.mouse = "a"
+	---------------------
+	--- Miscellaneous ---
+	---------------------
+	-- Enable mouse support
+	mouse = "a",
 
--- Use system clipboard
-vim.o.clipboard = "unnamedplus"
+	-- Use system clipboard
+	clipboard = "unnamedplus",
 
--- Spell checking
-vim.o.spell = true
+	-- Spell checking
+	spell = true,
 
--- File encoding
-vim.o.encoding = "UTF-8"
+	-- Faster scrolling
+	ttyfast = true,
 
--- nixCats specific stuff
-vim.g.startuptime_exe_path = nixCats.packageBinPath
+	-- We use Lualine instead so this is unnecessary
+	showmode = false,
+
+	-- File encoding
+	encoding = "UTF-8",
+}
+
+-- Set options
+for key, value in pairs(options) do
+	vim.o[key] = value
+end
 
 ---------------------
 --- Auto-commands ---
@@ -68,4 +78,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.hl.on_yank()
 	end,
+})
+
+-- Wrap text in Markdown files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	command = "setlocal wrap",
 })
