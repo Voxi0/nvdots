@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 			end
 
 			-- Enable syntax highlighting and other Treesitter features
-			vim.treesitter.start(buf, language)
+			vim.treesitter.start(buffer, language)
 		end
 
 		-- Run Treesitter on current file
@@ -38,28 +38,37 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
+-- Language Server Protocol (LSP) for error checking and a lot more
+vim.lsp.enable({ "lua_ls", "nil_ls" })
+-- vim.lsp.config["lua_ls"] = {
+-- 	cmd = { "lua-language-server" },
+-- 	filetypes = { "lua" },
+-- 	root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
+-- 	settings = {
+-- 		Lua = {
+-- 			workspace = {
+-- 				library = vim.api.nvim_get_runtime_file("", true),
+-- 			},
+-- 		},
+-- 	},
+-- }
+
 -- Autocompletion
-vim.api.nvim_create_autocmd("InsertEnter", {
-	once = true,
-	callback = function()
-		vim.cmd.packadd("blink.cmp")
-		require("blink-cmp").setup({
-			keymap = {
-				-- Get rid of all preset key-mappings
-				preset = "none",
+require("blink-cmp").setup({
+	keymap = {
+		-- Get rid of all preset key-mappings
+		preset = "none",
 
-				-- Go up and down
-				["<C-j>"] = { "select_next" },
-				["<C-k>"] = { "select_prev" },
-				["<Down>"] = { "scroll_documentation_down", "fallback" },
-				["<Up>"] = { "scroll_documentation_up", "fallback" },
+		-- Go up and down
+		["<C-j>"] = { "select_next" },
+		["<C-k>"] = { "select_prev" },
+		["<Down>"] = { "scroll_documentation_down", "fallback" },
+		["<Up>"] = { "scroll_documentation_up", "fallback" },
 
-				-- Documentation
-				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+		-- Documentation
+		["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 
-				-- Accept or cancel suggestion
-				["<Tab>"] = { "accept", "fallback" },
-			},
-		})
-	end,
+		-- Accept or cancel suggestion
+		["<Tab>"] = { "accept", "fallback" },
+	},
 })

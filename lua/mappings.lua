@@ -27,17 +27,3 @@ vim.keymap.set("n", "<escape>", "<cmd>nohlsearch<cr>", { desc = "Clear search hi
 
 -- Formatting
 vim.keymap.set("n", "<leader>mp", vim.lsp.buf.format, { desc = "Format current buffer" })
-
-vim.lsp.enable({ "lua_ls" })
-vim.lsp.config["lua_ls"] = {
-	cmd = { "lua-language-server" },
-	filetypes = { "lua" },
-	root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-		},
-	},
-}

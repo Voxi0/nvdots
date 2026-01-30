@@ -64,3 +64,12 @@ require("cord").setup({
 		end,
 	},
 })
+
+-- Markdown renderer
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.cmd.packadd("render-markdown.nvim")
+		require("render-markdown").setup({})
+	end,
+})

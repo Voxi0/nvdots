@@ -50,6 +50,12 @@
       # Plugins that are loaded at startup without using packadd
       startupPlugins = {
         general = {
+					core = with pkgs.vimPlugins; [
+						# Syntax highlighting, LSP and autocompletion
+            nvim-treesitter
+						nvim-lspconfig
+            blink-cmp
+					];
           qualityOfLife = with pkgs.vimPlugins; [snacks-nvim];
           misc = with pkgs.vimPlugins; [cord-nvim];
         };
@@ -65,11 +71,6 @@
             mini-icons
             lualine-nvim
           ];
-          core = with pkgs.vimPlugins; [
-            # Syntax highlighting and autocompletion
-            nvim-treesitter
-            blink-cmp
-          ];
           qualityOfLife = with pkgs.vimPlugins; [
             # Shows available keymaps as you type
             which-key-nvim
@@ -83,6 +84,9 @@
             mini-pairs
             mini-surround
             mini-sessions
+
+						# Render markdown
+						render-markdown-nvim
           ];
         };
       };

@@ -3,12 +3,12 @@ vim.keymap.set("n", "<leader>gg", function()
 	Snacks.lazygit()
 end, { desc = "Open LazyGit" })
 require("snacks").setup({
-	lazygit = { enabled = true },
-	indent = { enabled = true },
-	notifier = { enabled = true },
-	statuscolumn = { enabled = true },
+	lazygit = {},
+	indent = {},
+	notifier = {},
+	statuscolumn = {},
+	image = {},
 	dashboard = {
-		enabled = true,
 		sections = {
 			{ section = "header" },
 			{ section = "keys", gap = 1, padding = 1 },
