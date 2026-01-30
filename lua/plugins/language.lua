@@ -38,21 +38,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
--- Language Server Protocol (LSP) for error checking and a lot more
-vim.lsp.enable({ "lua_ls", "nil_ls" })
--- vim.lsp.config["lua_ls"] = {
--- 	cmd = { "lua-language-server" },
--- 	filetypes = { "lua" },
--- 	root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
--- 	settings = {
--- 		Lua = {
--- 			workspace = {
--- 				library = vim.api.nvim_get_runtime_file("", true),
--- 			},
--- 		},
--- 	},
--- }
-
 -- Autocompletion
 require("blink-cmp").setup({
 	keymap = {
