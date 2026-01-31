@@ -16,34 +16,6 @@ require("mini.pick").setup({
 vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", { desc = "Open file picker" })
 vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Open buffer picker" })
 
--- Code folding
-vim.api.nvim_create_autocmd("InsertEnter", {
-	once = true,
-	callback = function()
-		vim.cmd.packadd("nvim-ufo")
-		vim.keymap.set("n", "zR", function()
-			require("ufo").openAllFolds()
-		end, { desc = "Open all folds" })
-		vim.keymap.set("n", "zM", function()
-			require("ufo").closeAllFolds()
-		end, { desc = "Close all folds" })
-		require("ufo").setup({
-			provider_selector = function(bufnr, filetype, buftype)
-				return { "treesitter", "indent" }
-			end,
-		})
-	end,
-})
-
--- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
-vim.api.nvim_create_autocmd("InsertEnter", {
-	once = true,
-	callback = function()
-		vim.cmd.packadd("mini.surround")
-		require("mini.surround").setup()
-	end,
-})
-
 -- Autopairing
 vim.cmd.packadd("mini.pairs")
 require("mini.pairs").setup({
@@ -82,3 +54,27 @@ require("mini.sessions").setup({
 vim.keymap.set("n", "<leader>ls", function()
 	MiniSessions.read()
 end, { desc = "Read session" })
+
+-- Lazy-load plugins when you go to insert mode
+vim.api.nvim_create_autocmd("InsertEnter", {
+	once = true,
+	callback = function()
+		-- Code folding
+		vim.cmd.packadd("nvim-ufo")
+		vim.keymap.set("n", "zR", function()
+			require("ufo").openAllFolds()
+		end, { desc = "Open all folds" })
+		vim.keymap.set("n", "zM", function()
+			require("ufo").closeAllFolds()
+		end, { desc = "Close all folds" })
+		require("ufo").setup({
+			provider_selector = function(bufnr, filetype, buftype)
+				return { "treesitter", "indent" }
+			end,
+		})
+
+		-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
+		vim.cmd.packadd("mini.surround")
+		require("mini.surround").setup()
+	end,
+})

@@ -1,3 +1,6 @@
+-- Experimental Lua module loader using bytecode caching or whatever
+vim.loader.enable()
+
 local options = {
 	--------------------
 	--- Code folding ---

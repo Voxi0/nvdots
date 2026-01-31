@@ -3,59 +3,46 @@
 This is my personal [Neovim](https://neovim.io/) configuration.
 
 ## How it works
+I'm making use of [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules) which basically lets you take a package and wrap it with extra configuration and packages and all while using the Nix module system along with some pre-built wrapper modules to make your life easier.
 
-- [nixCats](https://nixcats.org/) - The package manager which focuses on
-  allowing one to manage plugins and other dependencies for Neovim in Nix. This
-  way, all dependencies are downloaded by Nix while Neovim is configured in Lua.
-  Check the website to learn why it would be better compared to alternatives
-  such as [NVF](https://github.com/notAShelf/nvf) and
-  [Nixvim](https://github.com/nix-community/nixvim)
+I'm using this to create a Neovim package with all my configurations and such applied to it. Since it's just a package, it can be easily installed on anything with Nix and also extended further.
 
-## How to add your own plugins
-
-Depends on how you're using nvdots really. Forking or cloning this
-repository is a dead-simple approach.
-
-### If you're forking or cloning this repo or whatever
-
-Also remember to commit your changes and all if you create a new file since
-Nix ignores any files that haven't been committed yet.
-
-- Modify `lib.nix` to mess with the plugins and packages and everything. You
-can pretty much completely ignore `flake.nix`
-- Create a new Lua file or use an existing file inside of `lua/plugins` to
-load and configure your plugins. Take a look at how I'm adding and configuring
-plugins to understand how you can do it. Reminder that it's only `optionalPlugins`
-that you use `packadd` on.
-
-## If you're using NixOS/Home-Manager module
-
+## How to add your own configuration/plugins or anything else
 - Add `nvdots` to flake inputs of course
 ```nix
 nvdots = {
-  url = "git+https://tangled.org/voxi0.tngl.sh/nvdots";
+  url = "github:Voxi0/nvdots";
   inputs.nixpkgs.follows = "nixpkgs";
 };
 ```
-- Import either NixOS or Home-Manager module. NixOS module is `inputs.nvdots.nixosModules.default`
-and for Home-Manager `inputs.nvdots.homeModules.default`. Change `default` to something else to
-use another package exported by the flake I guess.
-- Configure nvdots however you want using the module. Here's an example where I add a simple
-plugin on top of nvdots. You can also replace `merge` with `replace` if you want to completely
-override stuff and do your own thing.
+- Add the package to `home.packages` or `environment.systemPackages` or whatever.
+```
+inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim
+```
+- Configure nvdots however you want by wrapping the package with your own stuff. Here's an example where I add a simple plugin on top of nvdots.
 ```nix
-imports = [self.inputs.nvdots.homeModules.default];
-<name of the neovim package you're installing> = {
-  enable = true;
-  categoryDefinitions.merge = {pkgs, ...} @ packageDef: {
-	optionalPlugins = {
-	  general.misc = [pkgs.vimPlugins.vim-wakatime];
-	};
-	optionalLuaAdditions = {
-	  general = [
-		"vim.cmd.packadd('vim-wakatime')"
-	  ];
-	};
-  };
-};
+home.packages = [
+	(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
+		extraPackages = with pkgs; [
+			# Language servers
+			clang-tools # C/C++
+			nil # Nix
+			lua-language-server # Lua
+			astro-language-server # AstroJS - Webdev framework
+
+			# For the Wakatime plugin
+			wakatime-cli
+		];
+		specs.general = {
+			data = [pkgs.vimPlugins.vim-wakatime];
+			config = ''
+				-- Load Wakatime plugin
+				vim.cmd.packadd("vim-wakatime")
+
+				-- Enable LSP configurations for whatever languages I want
+				vim.lsp.enable({ "lua_ls", "nil_ls", "clangd", "zls", "astro" })
+			'';
+		};
+	}))
+];
 ```
