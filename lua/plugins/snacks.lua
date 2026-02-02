@@ -1,7 +1,4 @@
 -- Snacks.nvim
-vim.keymap.set("n", "<leader>gg", function()
-	Snacks.lazygit()
-end, { desc = "Open LazyGit" })
 require("snacks").setup({
 	lazygit = {},
 	indent = {},
@@ -15,6 +12,11 @@ require("snacks").setup({
 		},
 	},
 })
+
+-- LazyGit
+vim.keymap.set("n", "<leader>gg", function()
+	Snacks.lazygit()
+end, { desc = "Open LazyGit" })
 
 -- Show LSP loading progress
 vim.api.nvim_create_autocmd("LspProgress", {

@@ -90,10 +90,11 @@ inputs: {
         # Quality of life
         nvim-ufo
         snacks-nvim
-        mini-pairs
+				nvim-autopairs
         mini-surround
         mini-sessions
         live-preview-nvim
+				nvim-ts-autotag
 
         # Discord rich presence
         cord-nvim
