@@ -47,7 +47,7 @@ While a bunch of LSPs do include a formatter, I'd recommend using an external on
 }))
 ```
 
-# Installing extra plugins
+## Installing extra plugins
 This is super straightforward. Just add the plugin you wanna install to the correct specs list. For now, nvdots has only one specs list called `general`. So just add your own plugins to it's data list. Below is an example of adding Wakatime which also has an external dependency - `wakatime-cli`.
 
 ```nix

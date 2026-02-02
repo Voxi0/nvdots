@@ -4,6 +4,7 @@ import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
 export default defineConfig({
+	site: "https://nvdots.pages.dev/",
 	integrations: [
 		starlight({
 			title: "nvdocs",
@@ -16,4 +17,10 @@ export default defineConfig({
 			],
 		}),
 	],
+
+	viewTransitions: false,
+	prefetch: true,
+	build: {
+		inlineStylesheets: "always",
+	},
 });
