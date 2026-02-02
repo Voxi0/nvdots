@@ -70,7 +70,7 @@ inputs: {
       extraPackages = with pkgs; [ripgrep];
       data = with pkgs.vimPlugins; [
         # Theme, icons and statusline
-        nightfox-nvim
+        catppuccin-nvim
         mini-icons
         lualine-nvim
 

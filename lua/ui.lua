@@ -2,8 +2,19 @@
 -- Visuals ---
 --------------
 -- Theme
-vim.cmd.packadd("nightfox.nvim")
-vim.cmd("colorscheme carbonfox")
+vim.cmd.packadd("catppuccin-nvim")
+require("catppuccin").setup({
+	flavour = "mocha",
+	transparent_background = false,
+	color_overrides = {
+		mocha = {
+			base = "#000000",
+			mantle = "#010101",
+			crust = "#020202",
+		},
+	},
+})
+vim.cmd.colorscheme("catppuccin")
 
 -- Icons
 vim.cmd.packadd("mini.icons")
