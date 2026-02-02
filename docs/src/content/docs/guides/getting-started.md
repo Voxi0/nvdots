@@ -1,6 +1,8 @@
 ---
 title: Getting Started
 description: How to install and customize nvdots
+sidebar:
+    order: 1
 ---
 nvdots makes use of [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules/) to wrap Neovim with all my plugins and configuration so I recommend taking a look at [it's docs by clicking on this link](https://birdeehub.github.io/nix-wrapper-modules/). This will show you all sorts of ways to basically just, mess with the nvdots package to do your own thing and of course, understand how I'm creating it.
 
