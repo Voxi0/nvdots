@@ -7,7 +7,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: "nvdocs",
-			social: [{ icon: "github", label: "GitHub", href: "https://github.com/withastro/starlight" }],
+			social: [{ icon: "github", label: "GitHub", href: "https://github.com/Voxi0/nvdots" }],
 			sidebar: [
 				{
 					label: "Getting Started",

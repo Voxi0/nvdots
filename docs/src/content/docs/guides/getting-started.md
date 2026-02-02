@@ -1,53 +1,53 @@
 ---
 title: Getting Started
-description: Installing nvdots
+description: How to install and customize nvdots
 ---
+nvdots makes use of [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules/) to wrap Neovim with all my plugins and configuration so I recommend taking a look at [it's docs by clicking on this link](https://birdeehub.github.io/nix-wrapper-modules/). This will show you all sorts of ways to basically just, mess with the nvdots package to do your own thing and of course, understand how I'm creating it.
 
-The flake exports packages, overlays, a NixOS module and a Home Manager module so there are various ways you can use nvdots. Which way you choose to do things depends on your needs and all really.
+The flake exports just one package that you can wrap with your own configuration and plugins and all.
 
-Take a look at [the documentation or whatever for nixCats](https://nixcats.org/) so you can properly understand and customize nvdots to your liking since it makes use of nixCats. The templates are extremely helpful and will teach you a lot, you will need that information to effectively customize my configuration for yourself. In short, it's really just a sort of wrapper for Neovim so you can easily manage dependencies and plugins and all with Nix while configuring everything with Lua. It also provides some additional utilities and some other stuff that allows Nix and Neovim to work together better.
+The flake has nothing worth looking at since it only handles exporting a package and all. The interesting part is `nvim.nix` which is the actual package. Here you can see all the plugins and external dependencies e.g. `ripgrep` that is installed with nvdots by default along other additional settings.
 
-The example code and all that I have provided below are rather basic and doesn't go into much depth which is why I recommended reading the templates and all. I also recommend reading `lib.nix` to see what nvdots is doing e.g. what plugins it's installing, what packages it's exporting and how they're configured etc etc. The `flake.nix` is something you don't really have to mess with since it only exports stuff.
+Plugins are loaded using the builtin plugin manager provided by Neovim called `packadd` and combined with auto-commands for lazy-loading on events.
 
-Note that I'm using the default builtin plugin manager provided by Neovim called `packadd` along with auto-commands for lazy-loading and all.
-
-## Home-Manager Module
-- First, add nvdots to your Nix flake.
+## How to use nvdots
+- Add `nvdots` to flake inputs of course
 ```nix
 nvdots = {
   url = "github:Voxi0/nvdots";
 
-  # Use the nixpkgs you defined in your flake
+  # Use your flake's nixpkgs
   inputs.nixpkgs.follows = "nixpkgs";
 };
 ```
-- Then you can just import the Home Manager module and start using it
+- Add the package to `home.packages` or `environment.systemPackages` or whatever.
+```
+inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim
+```
+- Configure nvdots however you want by wrapping the package with your own stuff. Here's an example where I add some plugins and extra packages e.g. language servers on top of nvdots.
 ```nix
-imports = [inputs.nvdots.homeModule];
-nvdots = {
-  enable = true;
+home.packages = [
+	(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
+		extraPackages = with pkgs; [
+			# Language servers
+			clang-tools # C/C++
+			nil # Nix
+			lua-language-server # Lua
+			astro-language-server # AstroJS - Webdev framework
 
-  # This is the name of the stable package
-  # Use `unstable` if you want the nightly release of Neovim
-  packageNames = ["nvdots"];
+			# For the Wakatime plugin
+			wakatime-cli
+		];
+		specs.general = {
+			data = [pkgs.vimPlugins.vim-wakatime];
+			config = ''
+				-- Load Wakatime plugin
+				vim.cmd.packadd("vim-wakatime")
 
-  # Add extra plugins on top
-  # Use `replace` instead of `merge` to overwrite my configuration
-  categoryDefinitions.merge = {...}: {
-	# External dependencies e.g. `ripgrep`
-	lspsAndRuntimeDeps.general.deps = [pkgs.wakatime-cli];
-
-	# Extra plugins
-	optionalPlugins.general.misc = [pkgs.vimPlugins.vim-wakatime];
-
-	# Extra Lua configuration
-	optionalLuaAdditions.general = [''
-	  -- This is the builtin plugin manager for Neovim
-	  vim.cmd.packadd("vim-wakatime")
-
-	  -- Refer to the list of LSPs supported by nvim-lspconfig to figure out you can enable here
-	  vim.lsp.enable({ "lua_ls", "nil_ls", "clangd", "zls", "astro" })
-	''];
-  };
-};
+				-- Enable LSP configurations for whatever languages I want
+				vim.lsp.enable({ "lua_ls", "nil_ls", "clangd", "zls", "astro" })
+			'';
+		};
+	}))
+];
 ```

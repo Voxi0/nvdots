@@ -21,7 +21,9 @@
         wrapper = inputs.wrappers.lib.evalModule module;
       in {
         # Overlay with our Neovim package
-        overlays.default = final: prev: {neovim = wrapper.config.wrap {pkgs = final;};};
+        overlays.default = final: prev: {
+					neovim = wrapper.config.wrap {pkgs = final;};
+				};
 
         # Set wrapper modules - Also exports a package under the same name
         wrappers = {
