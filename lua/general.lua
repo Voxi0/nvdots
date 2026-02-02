@@ -67,14 +67,19 @@ local options = {
 
 -- Set options
 for key, value in pairs(options) do
-	vim.o[key] = value
+	vim.opt[key] = value
 end
 
 ---------------------
 --- Auto-commands ---
 ---------------------
 ----- Disable auto comments
-vim.cmd([[autocmd FileType * set formatoptions-=ro]])
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.formatoptions:remove({ "r", "o" })
+	end,
+})
 
 -- Highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -86,5 +91,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Wrap text in Markdown files
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "markdown",
-	command = "setlocal wrap",
+	callback = function()
+		vim.opt_local.wrap = true
+		vim.opt_local.linebreak = true
+	end,
 })

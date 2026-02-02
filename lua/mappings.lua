@@ -26,4 +26,10 @@ vim.keymap.set("v", ">", ">gv", { desc = "Indent right" })
 vim.keymap.set("n", "<escape>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlights" })
 
 -- Formatting
-vim.keymap.set("n", "<leader>mp", vim.lsp.buf.format, { desc = "Format current buffer" })
+vim.keymap.set("n", "<leader>mp", function()
+	require("conform").format({
+		lsp_fallback = true,
+		async = true,
+		timeout_ms = 500,
+	})
+end, { desc = "Format current buffer" })

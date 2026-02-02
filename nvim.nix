@@ -74,10 +74,11 @@ inputs: {
         mini-icons
         lualine-nvim
 
-        # Syntax highlighting, LSP and autocompletion
+        # Syntax highlighting, LSP, autocompletion and formatter
         nvim-treesitter
         nvim-lspconfig
         blink-cmp
+        conform-nvim
 
         # Shows available keymaps as you type
         which-key-nvim
@@ -92,9 +93,7 @@ inputs: {
         mini-pairs
         mini-surround
         mini-sessions
-
-        # Render markdown
-        render-markdown-nvim
+        live-preview-nvim
 
         # Discord rich presence
         cord-nvim
