@@ -2,17 +2,15 @@
 -- Visuals ---
 --------------
 -- Theme
-vim.cmd.packadd("catppuccin-nvim")
-require("catppuccin").setup({
-	flavour = "mocha",
-	transparent_background = false,
-	color_overrides = {
-		mocha = {
-			base = "#000000",
-			mantle = "#010101",
-			crust = "#020202",
-		},
-	},
+vim.api.nvim_create_autocmd("ColorScheme", {
+	pattern = "catppuccin",
+	callback = function()
+		setHl = vim.api.nvim_set_hl
+		setHl(0, "Normal", { bg = "#000000" })
+		setHl(0, "NormalFloat", { bg = "#000000" })
+		setHl(0, "FloatBorder", { fg = "#89b4fa" })
+		setHl(0, "WinSeparator", { fg = "#89b4fa" })
+	end,
 })
 vim.cmd.colorscheme("catppuccin")
 
@@ -40,7 +38,9 @@ require("lualine").setup({
 
 -- Animations for common Neovim actions
 vim.cmd.packadd("mini.animate")
-require("mini.animate").setup()
+require("mini.animate").setup({
+	cursor = { enable = false },
+})
 
 -- Enable 24-bit colors
 vim.opt.termguicolors = true
@@ -55,19 +55,6 @@ vim.opt.signcolumn = "yes"
 -- Keep 10 lines above/below the cursor and 8 columns left/right of the cursor
 vim.opt.scrolloff = 15
 vim.opt.sidescrolloff = 8
-vim.api.nvim_create_autocmd("CursorMoved", {
-	group = vim.api.nvim_create_augroup("AutoCenterEOF", { clear = true }),
-	callback = function()
-		local line_count = vim.api.nvim_buf_line_count(0)
-		local current_line = vim.api.nvim_win_get_cursor(0)[1]
-		local scrolloff = vim.opt.scrolloff:get()
-
-		-- If we are within the 'scrolloff' range of the end of the file
-		if line_count - current_line < scrolloff then
-			vim.cmd("normal! zz")
-		end
-	end,
-})
 
 -- No text wrapping around the screen
 vim.opt.wrap = false

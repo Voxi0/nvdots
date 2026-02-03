@@ -52,18 +52,19 @@ inputs: {
 
   # Configuration
   config = {
-    # Lua config directory
-    # Can be an impure path so it won't be managed by Nix allowing normal reload for quick edits
-    settings.config_directory = ./.;
-    # settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
-    # settings.config_directory = "/home/<USER>/.config/nvim";
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    settings = {
+      # Lua config directory
+      # Can be an impure path so it won't be managed by Nix allowing normal reload for quick edits
+      config_directory = ./.;
 
-    # Uncomment this to allow installing multiple Neovim derivations without path collisions
-    # settings.dont_link = true;
+      # Uncomment this to allow installing multiple Neovim derivations without path collisions
+      # dont_link = true;
 
-    # Also ensure these don't share values
-    # binName = "nvim";
-    # settings.aliases = [ ];
+      # Also ensure these don't share values
+      # binName = "nvim";
+      # settings.aliases = [ ];
+    };
 
     # Plugins
     specs.general = {
@@ -71,7 +72,6 @@ inputs: {
       extraPackages = with pkgs; [ripgrep];
       data = with pkgs.vimPlugins; [
         # UI
-        catppuccin-nvim
         mini-icons
         lualine-nvim
         mini-animate
