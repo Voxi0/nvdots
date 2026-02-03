@@ -70,10 +70,11 @@ inputs: {
       lazy = true;
       extraPackages = with pkgs; [ripgrep];
       data = with pkgs.vimPlugins; [
-        # Theme, icons and statusline
+        # UI
         catppuccin-nvim
         mini-icons
         lualine-nvim
+        mini-animate
 
         # Syntax highlighting + code structure, LSP, autocompletion and formatter
         nvim-treesitter

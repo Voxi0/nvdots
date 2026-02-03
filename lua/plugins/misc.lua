@@ -1,4 +1,5 @@
 -- Discord rich presence
+vim.cmd.packadd("cord.nvim")
 require("cord").setup({
 	enabled = true,
 	display = {

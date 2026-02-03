@@ -1,4 +1,5 @@
 -- Autocompletion
+vim.cmd.packadd("blink.cmp")
 require("blink-cmp").setup({
 	keymap = {
 		-- Get rid of all preset key-mappings

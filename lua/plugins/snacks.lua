@@ -1,4 +1,5 @@
--- Snacks.nvim
+vim.cmd.packadd("snacks.nvim")
+
 require("snacks").setup({
 	lazygit = {},
 	indent = {},

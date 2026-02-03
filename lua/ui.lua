@@ -38,22 +38,39 @@ require("lualine").setup({
 	},
 })
 
+-- Animations for common Neovim actions
+vim.cmd.packadd("mini.animate")
+require("mini.animate").setup()
+
 -- Enable 24-bit colors
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 
 -- Line numbering
-vim.o.number = true
-vim.o.relativenumber = true
+vim.opt.number = true
+vim.opt.relativenumber = true
 
 -- Always show signcolumn so the text doesn't shift whenever you start/stop typing
-vim.o.signcolumn = "yes"
+vim.opt.signcolumn = "yes"
 
 -- Keep 10 lines above/below the cursor and 8 columns left/right of the cursor
-vim.o.scrolloff = 10
-vim.o.sidescrolloff = 8
+vim.opt.scrolloff = 15
+vim.opt.sidescrolloff = 8
+vim.api.nvim_create_autocmd("CursorMoved", {
+	group = vim.api.nvim_create_augroup("AutoCenterEOF", { clear = true }),
+	callback = function()
+		local line_count = vim.api.nvim_buf_line_count(0)
+		local current_line = vim.api.nvim_win_get_cursor(0)[1]
+		local scrolloff = vim.opt.scrolloff:get()
+
+		-- If we are within the 'scrolloff' range of the end of the file
+		if line_count - current_line < scrolloff then
+			vim.cmd("normal! zz")
+		end
+	end,
+})
 
 -- No text wrapping around the screen
-vim.o.wrap = false
+vim.opt.wrap = false
 
 -- Window borders
-vim.o.winborder = "rounded"
+vim.opt.winborder = "rounded"
