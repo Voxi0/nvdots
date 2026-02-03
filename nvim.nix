@@ -76,6 +76,7 @@ inputs: {
 
         # Syntax highlighting + code structure, LSP, autocompletion and formatter
         nvim-treesitter
+        nvim-treesitter-textobjects
         nvim-lspconfig
         blink-cmp
         conform-nvim
@@ -90,11 +91,11 @@ inputs: {
         # Quality of life
         nvim-ufo
         snacks-nvim
-				nvim-autopairs
+        nvim-autopairs
         mini-surround
         mini-sessions
         live-preview-nvim
-				nvim-ts-autotag
+        nvim-ts-autotag
 
         # Discord rich presence
         cord-nvim

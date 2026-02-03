@@ -33,3 +33,20 @@ vim.keymap.set("n", "<leader>mp", function()
 		timeout_ms = 500,
 	})
 end, { desc = "Format current buffer" })
+
+-- Better textobjects using Treesitter
+-- Functions
+vim.keymap.set({ "x", "o" }, "of", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+end, { desc = "Select function outer" })
+vim.keymap.set({ "x", "o" }, "if", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+end, { desc = "Select function inner" })
+
+-- Classes
+vim.keymap.set({ "x", "o" }, "oc", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+end, { desc = "Select class outer" })
+vim.keymap.set({ "x", "o" }, "ic", function()
+	require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+end, { desc = "Select class inner" })

@@ -1,74 +1,67 @@
 -- Experimental Lua module loader using bytecode caching or whatever
 vim.loader.enable()
 
-local options = {
-	--------------------
-	--- Code folding ---
-	--------------------
-	foldenable = true,
-	foldcolumn = "1",
-	foldlevel = 99,
-	foldlevelstart = 99,
+--------------------
+--- Code folding ---
+--------------------
+vim.opt.foldenable = true
+vim.opt.foldcolumn = "1"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 
-	----------------
-	-- Searching ---
-	----------------
-	-- Case insensitive search unless search includes an uppercase character
-	ignorecase = true,
-	smartcase = true,
+----------------
+-- Searching ---
+----------------
+-- Case insensitive search unless search includes an uppercase character
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-	-- Highlight search results
-	hlsearch = true,
+-- Highlight search results
+vim.opt.hlsearch = true
 
-	-- Show matches as you type
-	incsearch = true,
+-- Show matches as you type
+vim.opt.incsearch = true
 
-	---------------------
-	--- File handling ---
-	---------------------
-	backup = false,
-	writebackup = false,
-	swapfile = false,
-	undofile = true,
-	undodir = vim.fn.expand("~/.vim/undodir"),
-	autoread = true,
-	autowrite = false,
+---------------------
+--- File handling ---
+---------------------
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.swapfile = false
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.expand("~/.vim/undodir")
+vim.opt.autoread = true
+vim.opt.autowrite = false
 
-	-------------------
-	--- Performance ---
-	-------------------
-	-- Faster completion
-	updatetime = 300,
+-------------------
+--- Performance ---
+-------------------
+-- Faster completion
+vim.opt.updatetime = 300
 
-	-- Don't redraw during macros
-	lazyredraw = true,
+-- Don't redraw during macros
+vim.opt.lazyredraw = true
 
-	---------------------
-	--- Miscellaneous ---
-	---------------------
-	-- Enable mouse support
-	mouse = "a",
+---------------------
+--- Miscellaneous ---
+---------------------
+-- Enable mouse support
+vim.opt.mouse = "a"
 
-	-- Use system clipboard
-	clipboard = "unnamedplus",
+-- Use system clipboard
+vim.opt.clipboard = "unnamedplus"
 
-	-- Spell checking
-	spell = true,
+-- Spell checking
+vim.opt.spell = true
 
-	-- Faster scrolling
-	ttyfast = true,
+-- Faster scrolling
+vim.opt.ttyfast = true
 
-	-- We use Lualine instead so this is unnecessary
-	showmode = false,
+-- We use Lualine instead so this is unnecessary
+vim.opt.showmode = false
 
-	-- File encoding
-	encoding = "UTF-8",
-}
-
--- Set options
-for key, value in pairs(options) do
-	vim.opt[key] = value
-end
+-- File encoding
+vim.opt.encoding = "UTF-8"
 
 ---------------------
 --- Auto-commands ---
