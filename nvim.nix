@@ -74,7 +74,7 @@ inputs: {
         mini-icons
         lualine-nvim
 
-        # Syntax highlighting, LSP, autocompletion and formatter
+        # Syntax highlighting + code structure, LSP, autocompletion and formatter
         nvim-treesitter
         nvim-lspconfig
         blink-cmp

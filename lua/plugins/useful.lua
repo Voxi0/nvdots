@@ -23,3 +23,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 		})
 	end
 })
+
+-- Use Treesitter to auto-close and auto-rename HTML tag
+require("nvim-ts-autotag").setup()
