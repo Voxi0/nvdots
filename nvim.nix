@@ -67,6 +67,7 @@ inputs: {
 
     # Plugins
     specs.general = {
+      lazy = true;
       extraPackages = with pkgs; [ripgrep];
       data = with pkgs.vimPlugins; [
         # Theme, icons and statusline
