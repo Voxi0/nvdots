@@ -69,7 +69,18 @@ inputs: {
     # Plugins
     specs.general = {
       lazy = true;
-      extraPackages = with pkgs; [ripgrep];
+      extraPackages = with pkgs; [
+        # For finding files - Modern replacement for `find`
+        fd
+
+        # For finding files containing specific text
+        ripgrep
+
+        # For `snacks.images`
+        ghostscript # To render PDF files
+        tectonic # To render LaTeX math expressions
+        mermaid-cli # To render Mermaid diagrams
+      ];
       data = with pkgs.vimPlugins; [
         # UI
         catppuccin-nvim
