@@ -2,7 +2,7 @@
 
 This is my personal [Neovim](https://neovim.io/) configuration exported as a package using [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules).
 
-Try it now! -> `nix run git+https://github.com/Voxi0/nvdots`
+Try it now! -> `nix run github:Voxi0/nvdots`
 
 ## How it works
 [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules) allows you to take a package and wrap it with extra configuration and packages and all while using the Nix module system along with some pre-built wrapper modules to make your life easier.
