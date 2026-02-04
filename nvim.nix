@@ -67,74 +67,93 @@ inputs: {
     };
 
     # Plugins
-    specs.general = {
-      lazy = true;
-      extraPackages = with pkgs; [
-        # For finding files - Modern replacement for `find`
-        fd
+    specs = {
+      # Automatically loaded on startup by Neovim (No lazy-loading)
+      startup = {
+        lazy = false;
+        data = with pkgs.vimPlugins; [
+          # Plugin manager
+          lze
+        ];
+      };
 
-        # For finding files containing specific text
-        ripgrep
+      # Lazy-loaded plugins
+      qualityOfLife = {
+        lazy = true;
+        extraPackages = with pkgs; [
+          # For `snacks.images`
+          ghostscript # To render PDF files
+          tectonic # To render LaTeX math expressions
+          mermaid-cli # To render Mermaid diagrams
+        ];
+        data = with pkgs.vimPlugins; [
+          # Quality of life
+          nvim-ufo # Code folding
+          snacks-nvim # Collection of plugins
+          nvim-autopairs # Autopairing
+          mini-surround # Manipulating pairs of characters
+          mini-ai # Extend `a` and `i` text objects
+          mini-sessions # Session management
+          live-preview-nvim # Get live preview in browser for Markdown and many other files
+          nvim-ts-autotag # Auto-close and auto-rename HTML tags using Treesitter
+        ];
+      };
+      general = {
+        lazy = true;
+        extraPackages = with pkgs; [
+          # For finding files - Modern replacement for `find`
+          fd
 
-        # For `snacks.images`
-        ghostscript # To render PDF files
-        tectonic # To render LaTeX math expressions
-        mermaid-cli # To render Mermaid diagrams
-      ];
-      data = with pkgs.vimPlugins; [
-        # UI
-        catppuccin-nvim
-        mini-icons
-        lualine-nvim
-        mini-animate
-        bufferline-nvim
+          # For finding files containing specific text
+          ripgrep
+        ];
+        data = with pkgs.vimPlugins; [
+          # UI
+          catppuccin-nvim
+          mini-icons
+          lualine-nvim
+          mini-animate
+          bufferline-nvim
 
-        # Syntax highlighting + code structure, LSP, autocompletion and formatter
-        nvim-treesitter.withAllGrammars
-        nvim-treesitter-textobjects
-        nvim-lspconfig
-        blink-cmp
-        conform-nvim
+          # Syntax highlighting + code structure, LSP, autocompletion and formatter
+          nvim-treesitter.withAllGrammars
+          nvim-treesitter-textobjects
+          nvim-lspconfig
+          blink-cmp
+          conform-nvim
 
-        # Shows available keymaps as you type
-        which-key-nvim
+          # Shows available keymaps as you type
+          which-key-nvim
 
-        # File explorer and picker
-        mini-files
-        mini-pick
+          # File explorer and picker
+          mini-files
+          mini-pick
 
-        # Quality of life
-        nvim-ufo
-        snacks-nvim
-        nvim-autopairs
-        mini-surround
-        mini-sessions
-        live-preview-nvim
-        nvim-ts-autotag
-
-        # Discord rich presence
-        cord-nvim
-      ];
+          # Discord rich presence
+          cord-nvim
+        ];
+      };
     };
 
     # This submodule modifies both levels of your specs
     extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [])) [];
     specMods = {
-      # When this module is ran in an inner list,
-      # this will contain `config` of the parent spec
+      # Will contain `config` of the parent spec when ran in an inner list
       parentSpec ? null,
-      # And this will contain `options`, otherwise `null`
+      # This will contain `options` or `null`
       parentOpts ? null,
       parentName ? null,
       # And then config from this one, as normal
       config,
       ...
     }: {
-      # This can be used to change defaults for the specs
-      options.extraPackages = lib.mkOption {
-        type = lib.types.listOf wlib.types.stringable;
-        default = [];
-        description = "a extraPackages spec field to put packages to suffix to the PATH";
+      # Change/Set defaults for the specs
+      options = {
+        extraPackages = lib.mkOption {
+          type = lib.types.listOf wlib.types.stringable;
+          default = [];
+          description = "An `extraPackages` spec field to put packages to suffix to the PATH";
+        };
       };
     };
   };

@@ -1,42 +1,97 @@
--- File explorer
-vim.cmd.packadd("mini.files")
-require("mini.files").setup()
-vim.keymap.set("n", "<leader>e", function()
-	MiniFiles.open()
-end, { desc = "Open file explorer" })
-
--- File picker
-vim.cmd.packadd("mini.pick")
-require("mini.pick").setup({
-	mappings = {
-		move_down = "<C-j>",
-		move_up = "<C-k>",
+return {
+	-- File explorer
+	{
+		"mini.files",
+		keys = {
+			{
+				"<leader>e",
+				mode = "n",
+				desc = "Open file explorer",
+				function()
+					MiniFiles.open()
+				end,
+			},
+		},
+		after = function()
+			require("mini.files").setup()
+		end,
 	},
-})
-vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>", { desc = "Open file picker" })
-vim.keymap.set("n", "<leader>fb", "<cmd>Pick buffers<cr>", { desc = "Open buffer picker" })
 
--- Session management
-vim.cmd.packadd("mini.sessions")
-require("mini.sessions").setup({
-	autoread = false,
-	autowrite = true,
+	-- File picker
+	{
+		"mini.pick",
+		keys = {
+			{ "<leader>ff", "<cmd>Pick files<cr>", mode = "n", desc = "Open file picker" },
+			{ "<leader>fb", "<cmd>Pick buffers<cr>", mode = "n", desc = "Open buffer picker" },
+		},
+		after = function()
+			require("mini.pick").setup({
+				mappings = {
+					move_down = "<C-j>",
+					move_up = "<C-k>",
+				},
+			})
+		end,
+	},
 
-	-- File for local session
-	file = "Session.vim",
+	-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
+	{
+		"mini.surround",
+		event = "InsertEnter",
+		after = function()
+			require("mini.surround").setup()
+		end,
+	},
 
-	-- Whether to print session path after action
-	verbose = { read = false, write = true, delete = true },
-})
-vim.keymap.set("n", "<leader>ls", function()
-	MiniSessions.read()
-end, { desc = "Read session" })
+	-- Extend `a` and `i` text objects
+	{
+		"mini.ai",
+		event = "BufReadPost",
+		after = function()
+			local ai = require("mini.ai")
+			ai.setup({
+				n_lines = 500,
+				custom_textobjects = {
+					-- Block-like objects
+					o = ai.gen_spec.treesitter({
+						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+					}),
 
--- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
-vim.api.nvim_create_autocmd("InsertEnter", {
-	once = true,
-	callback = function()
-		vim.cmd.packadd("mini.surround")
-		require("mini.surround").setup()
-	end,
-})
+					-- Functions
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+
+					-- Classes
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+				},
+			})
+		end,
+	},
+
+	-- Session management
+	{
+		"mini.sessions",
+		keys = {
+			{
+				"<leader>ls",
+				mode = "n",
+				desc = "Load session",
+				function()
+					MiniSessions.read()
+				end,
+			},
+		},
+		after = function()
+			require("mini.sessions").setup({
+				autoread = false,
+				autowrite = true,
+
+				-- File for local session
+				file = "Session.vim",
+
+				-- Whether to print session path after action
+				verbose = { read = false, write = true, delete = true },
+			})
+		end,
+	},
+}

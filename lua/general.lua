@@ -1,67 +1,62 @@
 -- Experimental Lua module loader using bytecode caching or whatever
 vim.loader.enable()
+o = vim.opt
 
 --------------------
 --- Code folding ---
 --------------------
-vim.opt.foldenable = true
-vim.opt.foldcolumn = "1"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
+o.foldenable = true
+o.foldcolumn = "1"
+o.foldlevel = 99
+o.foldlevelstart = 99
 
 ----------------
 -- Searching ---
 ----------------
 -- Case insensitive search unless search includes an uppercase character
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+o.ignorecase = true
+o.smartcase = true
 
 -- Highlight search results
-vim.opt.hlsearch = true
+o.hlsearch = true
 
 -- Show matches as you type
-vim.opt.incsearch = true
+o.incsearch = true
 
 ---------------------
 --- File handling ---
 ---------------------
-vim.opt.backup = false
-vim.opt.writebackup = false
-vim.opt.swapfile = false
-vim.opt.undofile = true
-vim.opt.undodir = vim.fn.expand("~/.vim/undodir")
-vim.opt.autoread = true
-vim.opt.autowrite = false
+o.backup = false
+o.writebackup = false
+o.swapfile = false
+o.undofile = true
+o.undodir = vim.fn.expand("~/.vim/undodir")
+o.autoread = true
+o.autowrite = false
 
 -------------------
 --- Performance ---
 -------------------
 -- Faster completion
-vim.opt.updatetime = 300
+o.updatetime = 300
 
 -- Don't redraw during macros
-vim.opt.lazyredraw = true
+o.lazyredraw = true
 
 ---------------------
 --- Miscellaneous ---
 ---------------------
 -- Enable mouse support
-vim.opt.mouse = "a"
+o.mouse = "a"
 
 -- Use system clipboard
-vim.opt.clipboard = "unnamedplus"
+o.clipboard = "unnamedplus"
 
 -- Spell checking
-vim.opt.spell = true
-
--- Faster scrolling
-vim.opt.ttyfast = true
+o.spell = true
 
 -- We use Lualine instead so this is unnecessary
-vim.opt.showmode = false
-
--- File encoding
-vim.opt.encoding = "UTF-8"
+o.showmode = false
 
 ---------------------
 --- Auto-commands ---
