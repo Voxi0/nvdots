@@ -72,9 +72,11 @@ inputs: {
       extraPackages = with pkgs; [ripgrep];
       data = with pkgs.vimPlugins; [
         # UI
+        catppuccin-nvim
         mini-icons
         lualine-nvim
         mini-animate
+        bufferline-nvim
 
         # Syntax highlighting + code structure, LSP, autocompletion and formatter
         nvim-treesitter

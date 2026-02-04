@@ -28,7 +28,10 @@
     # Nightly version of Neovim for bleeding-edge stuff
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+				nixpkgs.follows = "nixpkgs";
+				flake-parts.follows = "flake-parts";
+			};
     };
   };
 
