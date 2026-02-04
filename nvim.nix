@@ -79,7 +79,7 @@ inputs: {
         bufferline-nvim
 
         # Syntax highlighting + code structure, LSP, autocompletion and formatter
-        nvim-treesitter
+        nvim-treesitter.withAllGrammars
         nvim-treesitter-textobjects
         nvim-lspconfig
         blink-cmp

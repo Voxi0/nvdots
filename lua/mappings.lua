@@ -28,6 +28,9 @@ map("v", ">", ">gv", { desc = "Indent right" })
 map("n", "<escape>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlights" })
 
 -- Buffers
+map("n", "<leader>bn", ":bnext", {desc = "Goto next buffer"})
+map("n", "<leader>bp", ":bprev", {desc = "Goto previous buffer"})
+map("n", "<leader>bd", ":bdelete", {desc = "Delete current buffer"})
 
 -- Formatting
 map("n", "<leader>mp", function()
