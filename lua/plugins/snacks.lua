@@ -37,7 +37,7 @@ return {
 			desc = "Buffer Lines",
 			function()
 				Snacks.picker.lines({
-					layout = {preset = "vscode"}
+					layout = { preset = "vscode" },
 				})
 			end,
 		},

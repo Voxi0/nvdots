@@ -78,28 +78,9 @@ inputs: {
       };
 
       # Lazy-loaded plugins
-      qualityOfLife = {
-        lazy = true;
-        extraPackages = with pkgs; [
-          # For `snacks.images`
-          ghostscript # To render PDF files
-          tectonic # To render LaTeX math expressions
-          mermaid-cli # To render Mermaid diagrams
-        ];
-        data = with pkgs.vimPlugins; [
-          # Quality of life
-          nvim-ufo # Code folding
-          snacks-nvim # Collection of plugins
-          nvim-autopairs # Autopairing
-          mini-surround # Manipulating pairs of characters
-          mini-ai # Extend `a` and `i` text objects
-          mini-sessions # Session management
-          live-preview-nvim # Get live preview in browser for Markdown and many other files
-          nvim-ts-autotag # Auto-close and auto-rename HTML tags using Treesitter
-        ];
-      };
       general = {
         lazy = true;
+        after = ["startup"];
         extraPackages = with pkgs; [
           # For finding files - Modern replacement for `find`
           fd
@@ -130,6 +111,27 @@ inputs: {
 
           # Discord rich presence
           cord-nvim
+        ];
+      };
+      qualityOfLife = {
+        lazy = true;
+        after = ["general"];
+        extraPackages = with pkgs; [
+          # For `snacks.images`
+          ghostscript # To render PDF files
+          tectonic # To render LaTeX math expressions
+          mermaid-cli # To render Mermaid diagrams
+        ];
+        data = with pkgs.vimPlugins; [
+          # Quality of life
+          nvim-ufo # Code folding
+          snacks-nvim # Collection of plugins
+          nvim-autopairs # Autopairing
+          mini-surround # Manipulating pairs of characters
+          mini-ai # Extend `a` and `i` text objects
+          mini-sessions # Session management
+          live-preview-nvim # Get live preview in browser for Markdown and many other files
+          nvim-ts-autotag # Auto-close and auto-rename HTML tags using Treesitter
         ];
       };
     };
