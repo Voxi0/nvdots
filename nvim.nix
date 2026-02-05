@@ -127,7 +127,6 @@ inputs: {
 
           # File explorer and picker
           mini-files
-          mini-pick
 
           # Discord rich presence
           cord-nvim

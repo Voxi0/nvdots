@@ -17,23 +17,6 @@ return {
 		end,
 	},
 
-	-- File picker
-	{
-		"mini.pick",
-		keys = {
-			{ "<leader>ff", "<cmd>Pick files<cr>", mode = "n", desc = "Open file picker" },
-			{ "<leader>fb", "<cmd>Pick buffers<cr>", mode = "n", desc = "Open buffer picker" },
-		},
-		after = function()
-			require("mini.pick").setup({
-				mappings = {
-					move_down = "<C-j>",
-					move_up = "<C-k>",
-				},
-			})
-		end,
-	},
-
 	-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
 	{
 		"mini.surround",
