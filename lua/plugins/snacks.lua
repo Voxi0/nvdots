@@ -59,13 +59,31 @@ return {
 			end,
 		},
 
-		-- Help
+		-- Help / Man
 		{
 			"<leader>sh",
 			mode = "n",
-			desc = "Open help page",
+			desc = "Search help pages",
 			function()
 				Snacks.picker.help()
+			end,
+		},
+		{
+			"<leader>sm",
+			mode = "n",
+			desc = "Search man pages",
+			function()
+				Snacks.picker.man()
+			end,
+		},
+
+		-- Themes/Colorschemes
+		{
+			"<leader>th",
+			mode = "n",
+			desc = "Search themes/colorschemes",
+			function()
+				Snacks.picker.colorschemes()
 			end,
 		},
 

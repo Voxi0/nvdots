@@ -58,8 +58,10 @@ o.showmode = false
 ---------------------
 --- Auto-commands ---
 ---------------------
------ Disable auto comments
-vim.api.nvim_create_autocmd("FileType", {
+createAutoCmd = vim.api.nvim_create_autocmd
+
+-- Disable auto comments
+createAutoCmd("FileType", {
 	pattern = "*",
 	callback = function()
 		vim.opt_local.formatoptions:remove({ "r", "o" })
@@ -67,17 +69,38 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Highlight yanked text
-vim.api.nvim_create_autocmd("TextYankPost", {
+createAutoCmd("TextYankPost", {
 	callback = function()
 		vim.hl.on_yank()
 	end,
 })
 
 -- Wrap text in Markdown files
-vim.api.nvim_create_autocmd("FileType", {
+createAutoCmd("FileType", {
 	pattern = "markdown",
 	callback = function()
 		vim.opt_local.wrap = true
 		vim.opt_local.linebreak = true
+	end,
+})
+
+-- Open help page in a vertical split
+createAutoCmd("FileType", {
+	pattern = "help",
+	callback = function()
+		vim.cmd("wincmd L")
+		vim.cmd("vert resize 90")
+		vim.bo.bufhidden = "wipe"
+		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = true, silent = true })
+	end,
+})
+
+-- Open man page in a new buffer tab or whatever
+createAutoCmd("FileType", {
+	pattern = "man",
+	callback = function()
+		vim.cmd("wincmd T")
+		vim.bo.bufhidden = "wipe"
+		vim.keymap.set("n", "q", "<cmd>q<cr>", { buffer = true, silent = true })
 	end,
 })
