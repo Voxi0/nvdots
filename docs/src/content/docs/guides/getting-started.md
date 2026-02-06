@@ -1,15 +1,19 @@
 ---
 title: Getting Started
-description: What nvdots is and how it works
+description: How nvdots works under the hood
 sidebar:
     order: 1
 ---
 ## How it works
-nvdots uses [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules/) to wrap Neovim with plugins and configuration so I recommend taking a look at [it's docs](https://birdeehub.github.io/nix-wrapper-modules/). This will teach you how nvdots works under the hood which will give you the power to configure it to your liking.
+nvdots uses [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules/) to wrap Neovim with plugins and configuration and [lze](https://github.com/BirdeeHub/lze) for loading and configuring plugins. This way, Nix is only used for downloading Neovim and anything it needs e.g. plugins while the entire configuration can remain in Lua.
 
-The flake exports an overlay that replaces `pkgs.neovim` with nvdots and one package that you can directly install from the flake (see installation). It's nothing worth looking at since it only handles making nvdots usable. But do take a look at `nvim.nix` as it defines the nvdots package itself. Here you can see all the specs with their plugins, external dependencies e.g. `ripgrep` and whatnot along other additional settings. You WILL need to know what specs are available so you can effectively configure nvdots to your liking.
+The flake exports an overlay that replaces `pkgs.neovim` with nvdots and one package that you can directly install from the flake (see installation). It's nothing worth looking at since it only handles making nvdots usable. But do take a look at `nvim.nix` as it defines the nvdots package itself.
 
-Nix is in charge of downloading plugins and everything else while [lze](https://github.com/BirdeeHub/lze) handles lazy-loading and configuring plugins. Please read the README of lze as it's required so you can actually load+configure your own plugins. You can use `vim.cmd.packadd()` instead but that's not recommended really, to each their own though I won't judge.
+:::note
+It's best you read through the docs for [nix-wrapper-modules](https://birdeehub.github.io/nix-wrapper-modules/) and [lze](https://github.com/BirdeeHub/lze) since you can't really customize nvdots without knowing atleast the basics.
+
+Afterwards, read through [`nvim.nix`](https://github.com/Voxi0/nvdots/blob/main/nvim.nix) to understand how it works, what it has and all so you can figure out stuff like which specs to configure to get what you want.
+:::
 
 ## Project structure
 ### Base
@@ -26,7 +30,7 @@ All Lua modules are inside `lua/` obviously.
 - `mappings.lua` - Sets a bunch of useful keybinds e.g. binds to goto next/previous buffer and delete current buffer.
 
 #### Plugins
-Inside of the `plugins/` directory duh.
+Inside of the `lua/plugins/` directory duh.
 - `core.lua` - Configures super important plugins e.g. Treesitter for syntax-highlighting, `nvim-lspconfig` for LSP and `blink.cmp` for autocompletion.
 - `ui.lua` - Configures UI focused plugins e.g. the colorscheme, icon pack, Lualine and Noice.
 - `useful.lua` - Just a bunch of useful plugins e.g. Fyler for managing files, autopairing with nvim-autopairs, code folding with nvim-ufo etc.

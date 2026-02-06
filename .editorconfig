@@ -14,5 +14,6 @@ indent_size = 2
 [*.lua]
 tab_width = 4
 
-[*.md]
+[*{md,mdx}]
 indent_style = space
+indent_size = 4

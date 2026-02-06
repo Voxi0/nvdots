@@ -1,12 +1,14 @@
 ---
 title: Post-Install
-description: Recommended things to do after installing nvdots
+description: Things to do after installation
 sidebar:
     order: 3
 ---
 There are some important things that nvdots won't configure for you so you can set it up yourself the way you desire instead. Don't worry, it's not that hard promise.
 
-And just a reminder, all external dependencies goes into the `extraPackages` section. You can put any package in there that you want Neovim to be able to find e.g. ripgrep. Anything put inside of here will be available only to Neovim.
+:::note
+All external dependencies goes into `extraPackages` field of a spec. This can hold any package that you want only Neovim to be able to find e.g. ripgrep.
+:::
 
 ## Language servers (LSPs)
 LSPs are required for error-checking, autocompletion and a bunch more stuff. Some LSPs even have a built-in formatter that can be used with `vim.lsp.buf_format` though I'd say using an external formatter is better.
