@@ -1,6 +1,6 @@
 -- Experimental Lua module loader using bytecode caching or whatever
 vim.loader.enable()
-o = vim.opt
+local o = vim.opt
 
 --------------------
 --- Code folding ---
@@ -55,21 +55,53 @@ o.spell = true
 -- We use Lualine instead so this is unnecessary
 o.showmode = false
 
+-- Ignore all of Neovim's builtin colours so they don't show up in a picker menu
+o.wildignore:append({
+	"default.*",
+	"vim.*",
+	"unokai.*",
+	"blue.*",
+	"darkblue.*",
+	"delek.*",
+	"desert.*",
+	"elflord.*",
+	"evening.*",
+	"industry.*",
+	"habamax.*",
+	"koehler.*",
+	"lunaperche.*",
+	"morning.*",
+	"murphy.*",
+	"pablo.*",
+	"peachpuff.*",
+	"quiet.*",
+	"ron.*",
+	"shine.*",
+	"slate.*",
+	"sorbet.*",
+	"retrobox.*",
+	"torte.*",
+	"wildcharm.*",
+	"zaibatsu.*",
+	"zellner.*",
+	"catppuccin.*",
+})
+
 ---------------------
 --- Auto-commands ---
 ---------------------
-createAutoCmd = vim.api.nvim_create_autocmd
+local createAutoCmd = vim.api.nvim_create_autocmd
 
 -- Dynamic relative numbers (like LazyVim)
 createAutoCmd("InsertEnter", {
-    callback = function()
-        vim.opt.relativenumber = false
-    end,
+	callback = function()
+		vim.opt.relativenumber = false
+	end,
 })
 createAutoCmd("InsertLeave", {
-    callback = function()
-        vim.opt.relativenumber = true
-    end,
+	callback = function()
+		vim.opt.relativenumber = true
+	end,
 })
 
 -- Disable auto comments
