@@ -47,9 +47,9 @@ inputs: {
           mini-icons
           lualine-nvim
 
-					# Collection of plugins
+          # Collection of plugins
           # Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
-					# Can't be lazy-loaded because the dashboard obviously
+          # Can't be lazy-loaded because the dashboard obviously
           snacks-nvim
         ];
       };

@@ -95,7 +95,6 @@ return {
 	-- Auto-close and auto-rename HTML tags using Treesitter
 	{
 		"nvim-ts-autotag",
-		on_plugin = "nvim-treesitter",
 		after = function()
 			require("nvim-ts-autotag").setup()
 		end,

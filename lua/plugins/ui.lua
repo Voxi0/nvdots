@@ -19,6 +19,7 @@ return {
 				custom_highlights = function(colors)
 					return {
 						WinSeparator = { fg = colors.flamingo },
+						SnacksPickerBorder = { fg = colors.red },
 					}
 				end,
 			})

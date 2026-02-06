@@ -104,14 +104,14 @@ return {
 			-- Indentation guides
 			indent = {},
 
-			-- TUI for Git
-			lazygit = {},
-
 			-- Better statuscolumn
 			statuscolumn = {},
 
 			-- Smooth scrolling
 			scroll = {},
+
+			-- TUI for Git
+			lazygit = {},
 
 			-- Renders images
 			image = {},
@@ -126,8 +126,26 @@ return {
 
 			-- Picker
 			picker = {
-				-- Disable previewer
-				layout = { preset = "vscode", preview = false },
+				hidden = { "preview" },
+				layout = {
+					layout = {
+						backdrop = false,
+						row = 1,
+						width = 0.4,
+						min_width = 80,
+						height = 0.4,
+						border = "none",
+						box = "vertical",
+						{
+							win = "input",
+							height = 1,
+							border = true,
+							title = "{title} {live} {flags}",
+							title_pos = "center",
+						},
+						{ win = "list", border = true },
+					},
+				},
 			},
 		})
 	end,

@@ -1,4 +1,10 @@
 return {
+	-- Required for `nvim-ts-autotag` to function properly
+	{
+		"nvim-treesitter",
+		dep_of = "nvim-ts-autotag",
+	},
+
 	-- Treesitter textobjects for more codeaware Neovim motions
 	-- Extends `mini.ai` to give it more textobjects to work with
 	{
