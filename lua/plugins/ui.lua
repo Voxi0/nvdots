@@ -29,6 +29,7 @@ return {
 	-- Icons
 	{
 		"mini.icons",
+		lazy = false,
 		after = function()
 			local icons = require("mini.icons")
 			icons.setup()

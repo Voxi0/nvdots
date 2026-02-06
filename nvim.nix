@@ -41,6 +41,16 @@ inputs: {
         data = with pkgs.vimPlugins; [
           # Plugin manager
           lze
+
+          # UI
+          catppuccin-nvim
+          mini-icons
+          lualine-nvim
+
+					# Collection of plugins
+          # Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
+					# Can't be lazy-loaded because the dashboard obviously
+          snacks-nvim
         ];
       };
 
@@ -51,15 +61,6 @@ inputs: {
         data = with pkgs.vimPlugins; [
           # Completely replaces the UI for messages, cmdline and the popupmenu
           noice-nvim
-
-          # Theme/Colorscheme
-          catppuccin-nvim
-
-          # Icon pack
-          mini-icons
-
-          # Statusline
-          lualine-nvim
         ];
       };
       general = {
@@ -106,10 +107,6 @@ inputs: {
           # Code folding
           nvim-ufo
 
-          # Collection of plugins
-          # Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
-          snacks-nvim
-
           # Autopairs characters e.g. `()`
           nvim-autopairs
 
@@ -134,12 +131,9 @@ inputs: {
     # This submodule modifies both levels of your specs
     extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [])) [];
     specMods = {
-      # Will contain `config` of the parent spec when ran in an inner list
       parentSpec ? null,
-      # This will contain `options` or `null`
       parentOpts ? null,
       parentName ? null,
-      # And then config from this one, as normal
       config,
       ...
     }: {
