@@ -36,31 +36,28 @@ inputs: {
     # Plugins
     specs = {
       # Automatically loaded on startup by Neovim (No lazy-loading)
-      startup = {
-        lazy = false;
-        data = with pkgs.vimPlugins; [
-          # Plugin manager
-          lze
-
-          # UI
-          catppuccin-nvim
-          mini-icons
-          lualine-nvim
-
-          # Collection of plugins
-          # Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
-          # Can't be lazy-loaded because the dashboard obviously
-          snacks-nvim
-        ];
-      };
+      # Don't mess with this. There's literally no reason to.
+      plugin-manager.data = pkgs.vimPlugins.lze;
 
       # Lazy-loaded plugins
       ui = {
         lazy = true;
         after = ["startup"];
         data = with pkgs.vimPlugins; [
+          # Colorscheme/Theme
+          catppuccin-nvim
+
+          # Icon pack
+          mini-icons
+
+          # Statusline
+          lualine-nvim
+
           # Completely replaces the UI for messages, cmdline and the popupmenu
           noice-nvim
+
+          # Dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
+          snacks-nvim
         ];
       };
       general = {
