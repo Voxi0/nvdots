@@ -1,22 +1,4 @@
 return {
-	-- File explorer
-	{
-		"mini.files",
-		keys = {
-			{
-				"<leader>e",
-				mode = "n",
-				desc = "Open file explorer",
-				function()
-					MiniFiles.open()
-				end,
-			},
-		},
-		after = function()
-			require("mini.files").setup()
-		end,
-	},
-
 	-- Add, delete, replace, find and highlight surrounding e.g. a pair of parenthesis, quotes, etc.
 	{
 		"mini.surround",

@@ -71,37 +71,37 @@ return {
 	},
 	after = function()
 		require("snacks").setup({
-			picker = {
-				-- Disable previewer
-				layout = { preset = "vscode", preview = false },
-			},
+			-- Indentation guides
 			indent = {},
+
+			-- Highlight same words
+			words = {},
+
+			-- TUI for Git
 			lazygit = {},
-			notifier = {},
+
+			-- Better statuscolumn
 			statuscolumn = {},
+
+			-- Smooth scrolling
+			scroll = {},
+
+			-- Renders images
 			image = {},
+
+			-- Dashboard
 			dashboard = {
 				sections = {
 					{ section = "header" },
 					{ section = "keys", gap = 1, padding = 1 },
 				},
 			},
-		})
 
-		-- Show LSP loading progress
-		vim.api.nvim_create_autocmd("LspProgress", {
-			callback = function(ev)
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-				vim.notify(vim.lsp.status(), "info", {
-					id = "lsp_progress",
-					title = client.name,
-					opts = function(notif)
-						notif.icon = ev.data.params.value.kind == "end" and " "
-							or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-					end,
-				})
-			end,
+			-- Picker
+			picker = {
+				-- Disable previewer
+				layout = { preset = "vscode", preview = false },
+			},
 		})
 	end,
 }

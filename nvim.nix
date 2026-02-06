@@ -8,46 +8,13 @@ inputs: {
   imports = [wlib.wrapperModules.neovim];
 
   # Module options
-  options = {
-    nvim-lib = {
-      neovimPlugins = lib.mkOption {
-        readOnly = true;
-        type = lib.types.attrsOf wlib.types.stringable;
-
-        # Build all plugins in `inputs`
-        # They can be accessed later via `config.nvim-lib.neovimPlugins.<name_without_prefix>`
-        default = config.nvim-lib.pluginsFromPrefix "plugins-" inputs;
-      };
-
-      # Build a plugin from it's prefix
-      pluginsFromPrefix = lib.mkOption {
-        type = lib.types.raw;
-        readOnly = true;
-        default = prefix: inputs:
-          lib.pipe inputs [
-            builtins.attrNames
-            (builtins.filter (s: lib.hasPrefix prefix s))
-            (map (
-              input: let
-                name = lib.removePrefix prefix input;
-              in {
-                inherit name;
-                value = config.nvim-lib.mkPlugin name inputs.${input};
-              }
-            ))
-            builtins.listToAttrs
-          ];
-      };
-    };
-
-    settings = {
-      # Tell Lua which top-level specs are enabled
-      cats = lib.mkOption {
-        readOnly = true;
-        type = lib.types.attrsOf lib.types.bool;
-        default = builtins.mapAttrs (_: v: v.enable) config.specs;
-      };
-    };
+  options.settings = {
+		# Tell Lua which top-level specs are enabled
+		cats = lib.mkOption {
+			readOnly = true;
+			type = lib.types.attrsOf lib.types.bool;
+			default = builtins.mapAttrs (_: v: v.enable) config.specs;
+		};
   };
 
   # Configuration
@@ -78,9 +45,26 @@ inputs: {
       };
 
       # Lazy-loaded plugins
+			ui = {
+				lazy = true;
+				after = ["startup"];
+				data = with pkgs.vimPlugins; [
+					# Completely replaces the UI for messages, cmdline and the popupmenu
+					noice-nvim
+
+					# Theme/Colorscheme
+          catppuccin-nvim
+
+					# Icon pack
+          mini-icons
+
+					# Statusline
+          lualine-nvim
+				];
+			};
       general = {
         lazy = true;
-        after = ["startup"];
+        after = ["ui"];
         extraPackages = with pkgs; [
           # For finding files - Modern replacement for `find`
           fd
@@ -89,13 +73,6 @@ inputs: {
           ripgrep
         ];
         data = with pkgs.vimPlugins; [
-          # UI
-          catppuccin-nvim
-          mini-icons
-          lualine-nvim
-          mini-animate
-          bufferline-nvim
-
           # Syntax highlighting + code structure, LSP, autocompletion and formatter
           nvim-treesitter.withAllGrammars
           nvim-treesitter-textobjects
@@ -106,8 +83,8 @@ inputs: {
           # Shows available keymaps as you type
           which-key-nvim
 
-          # File explorer and picker
-          mini-files
+          # File explorer
+          fyler-nvim
 
           # Discord rich presence
           cord-nvim
@@ -123,15 +100,30 @@ inputs: {
           mermaid-cli # To render Mermaid diagrams
         ];
         data = with pkgs.vimPlugins; [
-          # Quality of life
-          nvim-ufo # Code folding
-          snacks-nvim # Collection of plugins
-          nvim-autopairs # Autopairing
-          mini-surround # Manipulating pairs of characters
-          mini-ai # Extend `a` and `i` text objects
-          mini-sessions # Session management
-          live-preview-nvim # Get live preview in browser for Markdown and many other files
-          nvim-ts-autotag # Auto-close and auto-rename HTML tags using Treesitter
+					# Code folding
+          nvim-ufo
+
+					# Collection of plugins
+					# Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
+          snacks-nvim
+
+					# Autopairs characters e.g. `()`
+          nvim-autopairs
+
+					# Manipulate pairs of characters e.g. replacing an autopair with a motion
+          mini-surround
+
+					# More `a` and `i` text objects to improve motions
+          mini-ai
+
+					# Session management
+          mini-sessions
+
+					# Live preview Markdown and many other files in the browser
+          live-preview-nvim
+
+					# Auto-close and auto-rename HTML tags using Treesitter
+          nvim-ts-autotag
         ];
       };
     };

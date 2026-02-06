@@ -9,6 +9,18 @@ return {
 		end,
 	},
 
+	-- File explorer
+	{
+		"fyler.nvim",
+		lazy = false,
+		keys = {
+			{ "<leader>e", "<cmd>Fyler kind=float<cr>", mode = "n", desc = "Toggle file explorer" },
+		},
+		after = function()
+			require("fyler").setup()
+		end,
+	},
+
 	-- Autopairing
 	{
 		"nvim-autopairs",

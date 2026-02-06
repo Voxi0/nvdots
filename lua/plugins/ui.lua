@@ -79,42 +79,25 @@ return {
 		end,
 	},
 
-	-- Animations for common Neovim actions
+	-- Completely replaces the UI for messages, cmdline and the popupmenu
 	{
-		"mini.animate",
+		"noice.nvim",
 		event = "DeferredUIEnter",
 		after = function()
-			-- Animations for common Neovim actions
-			require("mini.animate").setup({
-				cursor = { enable = false },
-			})
-		end,
-	},
-
-	-- Bufferline
-	{
-		"bufferline.nvim",
-		event = { "BufReadPost", "BufNewFile" },
-		keys = {
-			{
-				"<leader>bda",
-				mode = "n",
-				desc = "Close all buffers except the current one",
-				"<cmd>BufferLineCloseOthers<cr>",
-			},
-		},
-		after = function()
-			require("bufferline").setup({
-				options = {
-					sort_by = "insert_after_current",
-					separator_style = "slanted",
-					diagnostics = "nvim_lsp",
-					indicator = { style = "underline" },
-					hover = {
-						enabled = true,
-						delay = 200,
-						reveal = { "close" },
+			require("noice").setup({
+				lsp = {
+					-- Override markdown rendering so that plugins use Treesitter
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
 					},
+				},
+				presets = {
+					bottom_search = true, -- Classic bottom cmdline for search
+					command_palette = true, -- Position the cmdline and popupmenu together
+					long_message_to_split = true, -- Long messages will be sent to a split
+					inc_rename = false, -- Enable an input dialog for inc-rename.nvim
+					lsp_doc_border = false, -- Add a border to hover docs and signature help
 				},
 			})
 		end,
