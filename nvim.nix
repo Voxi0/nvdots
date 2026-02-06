@@ -9,12 +9,12 @@ inputs: {
 
   # Module options
   options.settings = {
-		# Tell Lua which top-level specs are enabled
-		cats = lib.mkOption {
-			readOnly = true;
-			type = lib.types.attrsOf lib.types.bool;
-			default = builtins.mapAttrs (_: v: v.enable) config.specs;
-		};
+    # Tell Lua which top-level specs are enabled
+    cats = lib.mkOption {
+      readOnly = true;
+      type = lib.types.attrsOf lib.types.bool;
+      default = builtins.mapAttrs (_: v: v.enable) config.specs;
+    };
   };
 
   # Configuration
@@ -45,23 +45,23 @@ inputs: {
       };
 
       # Lazy-loaded plugins
-			ui = {
-				lazy = true;
-				after = ["startup"];
-				data = with pkgs.vimPlugins; [
-					# Completely replaces the UI for messages, cmdline and the popupmenu
-					noice-nvim
+      ui = {
+        lazy = true;
+        after = ["startup"];
+        data = with pkgs.vimPlugins; [
+          # Completely replaces the UI for messages, cmdline and the popupmenu
+          noice-nvim
 
-					# Theme/Colorscheme
+          # Theme/Colorscheme
           catppuccin-nvim
 
-					# Icon pack
+          # Icon pack
           mini-icons
 
-					# Statusline
+          # Statusline
           lualine-nvim
-				];
-			};
+        ];
+      };
       general = {
         lazy = true;
         after = ["ui"];
@@ -100,29 +100,29 @@ inputs: {
           mermaid-cli # To render Mermaid diagrams
         ];
         data = with pkgs.vimPlugins; [
-					# Code folding
+          # Code folding
           nvim-ufo
 
-					# Collection of plugins
-					# Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
+          # Collection of plugins
+          # Provides dashboard, file picker, indent guides, LazyGit, better statuscolumn, smooth-scrolling and image rendering
           snacks-nvim
 
-					# Autopairs characters e.g. `()`
+          # Autopairs characters e.g. `()`
           nvim-autopairs
 
-					# Manipulate pairs of characters e.g. replacing an autopair with a motion
+          # Manipulate pairs of characters e.g. replacing an autopair with a motion
           mini-surround
 
-					# More `a` and `i` text objects to improve motions
+          # More `a` and `i` text objects to improve motions
           mini-ai
 
-					# Session management
+          # Session management
           mini-sessions
 
-					# Live preview Markdown and many other files in the browser
+          # Live preview Markdown and many other files in the browser
           live-preview-nvim
 
-					# Auto-close and auto-rename HTML tags using Treesitter
+          # Auto-close and auto-rename HTML tags using Treesitter
           nvim-ts-autotag
         ];
       };
