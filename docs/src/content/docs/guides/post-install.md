@@ -2,59 +2,93 @@
 title: Post-Install
 description: Recommended things to do after installing nvdots
 sidebar:
-    order: 2
+    order: 3
 ---
-There are some super duper important stuff that nvdots won't configure for you so you can set it up yourself instead. Don't worry, it's not that hard. I'll guide you through it.
+There are some important things that nvdots won't configure for you so you can set it up yourself the way you desire instead. Don't worry, it's not that hard promise.
 
-And just a reminder, all external dependencies goes into the `extraPackages` section. This can be literally any package.
+And just a reminder, all external dependencies goes into the `extraPackages` section. You can put any package in there that you want Neovim to be able to find e.g. ripgrep. Anything put inside of here will be available only to Neovim.
 
 ## Language servers (LSPs)
-LSPs are required for error-checking, autocompletion. I'd say using an external formatter is better but some LSPs do include a formatter. , Nvdots uses `nvim-lspconfig` which basically configures a whole lot of language servers for you so you can simply just, enable them to get it working right away.
+LSPs are required for error-checking, autocompletion and a bunch more stuff. Some LSPs even have a built-in formatter that can be used with `vim.lsp.buf_format` though I'd say using an external formatter is better.
 
-Just install some language servers and use `vim.lsp.enable`. Check [this site](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md) to figure out what language servers are supported and how they're configured by default.
+Nvdots uses `nvim-lspconfig` which sets up many language servers for you so you can easily start using them out of the box.
 
-So, let's try this with `lua-ls`. Note that `nvim-lspconfig` configures it under `lua_ls` so you need to do `vim.lsp.enable("lua_ls")`. Also to enable multiple language servers, you'd do this, `vim.lsp.enable({"lua_ls", "<another language server>"})`
+Just install some language servers and use `vim.lsp.enable` e.g. `vim.lsp.enable("clangd")`. Check [this site](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md) to figure out what language servers are supported and how they're configured by default. You can easily configure any language server to your liking as well, check the docs provided by `nvim-lspconfig` to figure out stuff.
+
+So, let's try setting up Lua language server (LuaLS). Note that `nvim-lspconfig` configures it under `lua_ls` so you need to do `vim.lsp.enable("lua_ls")`. Also to enable multiple language servers, you'd do this, `vim.lsp.enable({"lua_ls", "<another language server>"})`.
 
 ```nix
-(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
-	extraPackages = with pkgs; [
-		# Lua language server
-		lua-language-server
-	];
-	specs.general.config = ''
-		-- Enable Lua language server
-		vim.lsp.enable("lua_ls"})
-	'';
-}))
+extraPackages = with pkgs; [
+    # Lua language server
+    lua-language-server
+];
+specs.general.config = ''
+    -- Enable Lua language server
+    vim.lsp.enable("lua_ls"})
+'';
 ```
 
 ## Formatting
-While a bunch of LSPs do include a formatter, I'd recommend using an external one instead. Nvdots uses [`conform.nvim`](https://github.com/stevearc/conform.nvim) so read through their README to configure it to your liking and set up formatters. This is the same as for LSPs really. Just install your formatters and then set them by configuring `conform.nvim`.
-```
-(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
-	extraPackages = with pkgs; [
-		# Lua formatters
-		stylua
-	];
-	specs.general.config = ''
-		-- Set up formatters for various filetypes
-		require("conform").setup({
-			formatters_by_ft = {
-				lua = { "stylua" },
-			},
-		})
-	'';
-}))
+An external formatter may be better than the one included with a LSP in my opinion. [`conform.nvim`](https://github.com/stevearc/conform.nvim) is a popular choice and is very nice and easy to set up. Just install your formatters and then set which formatter should be used for each filetype by configuring `conform.nvim`.
+
+```nix
+extraPackages = with pkgs; [
+    # Lua formatter
+    stylua
+];
+specs.general = {
+    data = with pkgs.vimPlugins; [
+        conform-nvim
+    ];
+    config = ''
+        -- lze is used to manage plugins in nvdots but you can use `vim.cmd.packadd` too if you want although it isn't recommended
+        require("lze").load({
+            {
+                "conform.nvim",
+
+                -- conform.nvim will be loaded when you use any of these keybinds
+                keys = {
+                    -- Format current buffer
+                    {
+                        "<leader>mp",
+                        mode = "n",
+                        desc = "Format current buffer",
+                        function()
+                            require("conform").format()
+                        end,
+                    }
+                },
+
+                -- Set up and configure conform.nvim
+                after = function()
+                    require("conform").setup({
+                        formatters_by_ft = {
+                            lua = { "stylua" },
+                        },
+                    })
+                end,
+            },
+        })
+    '';
+};
 ```
 
 ## Installing extra plugins
-This is super straightforward. Just add the plugin you wanna install to the correct specs list. For now, nvdots has only one specs list called `general`. So just add your own plugins to it's data list. Below is an example of adding Wakatime which also has an external dependency - `wakatime-cli`.
+Just add the plugin you wanna install to the data list of the correct specs list and then load+configure it using [lze](https://github.com/BirdeeHub/lze) in the `config` section. Below is an example of adding Wakatime which also has an external dependency - `wakatime-cli` and requires no extra setup or configuration.
 
 ```nix
-(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
-  extraPackages = with pkgs; [
-	# For the Wakatime plugin
-	wakatime-cli
-  ];
-  specs.general.data = [pkgs.vimPlugins.vim-wakatime];
+extraPackages = with pkgs; [
+    # Required for the Wakatime plugin
+    wakatime-cli
+];
+specs.general = {
+    data = with pkgs.vimPlugins; [
+        vim-wakatime
+    ];
+    config = ''
+        -- lze is used to manage plugins in nvdots but you can use `vim.cmd.packadd` too if you want although it isn't recommended
+        require("lze").load({
+        })
+    '';
+};
 ```

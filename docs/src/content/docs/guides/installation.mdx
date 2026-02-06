@@ -1,0 +1,68 @@
+---
+title: Installation
+desc: Installing nvdots on your system
+sidebar:
+    order: 2
+---
+import { Steps } from "@astrojs/starlight/components";
+
+## How to use nvdots
+Add nvdots to your flake.
+```nix
+nvdots = {
+  url = "github:Voxi0/nvdots";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+```
+
+### As a package
+
+<Steps>
+
+1. Add the package to `home.packages` or `environment.systemPackages` or whatever and configure it however by wrapping it with your own stuff.
+	```nix
+	home.packages = [
+		(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
+		# extraPackages = with pkgs; [];
+		# specs.<spec_name> = {
+		#     # Add more plugins to this spec
+		#     data = with pkgs.vimPlugins; [];
+		#
+		#     # Extend this spec with your own Lua config
+		#     config = ''
+		#     '';
+		# };
+	    }))
+	];
+	```
+
+</Steps>
+
+### As an overlay
+
+<Steps>
+
+1. Add the overlay to your `pkgs` instance. Note that this will replace `pkgs.neovim` with the package that nvdots exports.
+	```nix
+	pkgs = import inputs.nixpkgs {
+	    inherit system;
+	    overlays = [inputs.nvdots.overlays.default];
+	};
+	```
+2. Configure nvdots however you want by wrapping the package with your own stuff.
+	```nix
+	home.packages = [
+		(pkgs.neovim.wrap ({pkgs, ...}: {
+		# extraPackages = with pkgs; [];
+		# specs.<spec_name> = {
+		#     # Add more plugins to this spec
+		#     data = with pkgs.vimPlugins; [];
+		#
+		#     # Extend this spec with your own Lua config
+		#     config = ''
+		#     '';
+		# };
+	    }))
+	];
+	```
+</Steps>
