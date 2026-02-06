@@ -52,7 +52,7 @@ return {
 			},
 		},
 		before = function()
-			o = vim.opt
+			local o = vim.opt
 			o.foldenable = true
 			o.foldlevel = 99
 			o.foldlevelstart = 99
@@ -65,25 +65,6 @@ return {
 				end,
 			})
 		end,
-	},
-
-	-- Formatter
-	{
-		"conform.nvim",
-		keys = {
-			{
-				"<leader>mp",
-				mode = "n",
-				desc = "Format current buffer",
-				function()
-					require("conform").format({
-						lsp_fallback = false,
-						async = true,
-						timeout_ms = 500,
-					})
-				end,
-			},
-		},
 	},
 
 	-- Git integration

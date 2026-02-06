@@ -74,12 +74,11 @@ inputs: {
           ripgrep
         ];
         data = with pkgs.vimPlugins; [
-          # Syntax highlighting + code structure, LSP, autocompletion and formatter
+          # Syntax highlighting + code structure, LSP and autocompletion
           nvim-treesitter.withAllGrammars
           nvim-treesitter-textobjects
           nvim-lspconfig
           blink-cmp
-          conform-nvim
 
           # Shows available keymaps as you type
           which-key-nvim
