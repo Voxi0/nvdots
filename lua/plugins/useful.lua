@@ -86,6 +86,12 @@ return {
 		},
 	},
 
+	-- Git integration
+	{
+		"gitsigns.nvim",
+		event = "BufReadPost",
+	},
+
 	-- Auto-close and auto-rename HTML tags using Treesitter
 	{
 		"nvim-ts-autotag",

@@ -3,7 +3,9 @@ return {
 	priority = 1000,
 	lazy = false,
 	keys = {
-		-- Picker
+		--------------
+		--- Picker ---
+		--------------
 		-- Files
 		{
 			"<leader>ff",
@@ -43,17 +45,27 @@ return {
 		},
 		{
 			"<leader>sB",
+			desc = "Grep Open Buffers",
 			function()
 				Snacks.picker.grep_buffers()
 			end,
-			desc = "Grep Open Buffers",
 		},
 		{
 			"<leader>sw",
-			desc = "Visual selection or word",
 			mode = { "n", "x" },
+			desc = "Visual selection or word",
 			function()
 				Snacks.picker.grep_word()
+			end,
+		},
+
+		-- Help
+		{
+			"<leader>sh",
+			mode = "n",
+			desc = "Open help page",
+			function()
+				Snacks.picker.help()
 			end,
 		},
 
@@ -73,9 +85,6 @@ return {
 		require("snacks").setup({
 			-- Indentation guides
 			indent = {},
-
-			-- Highlight same words
-			words = {},
 
 			-- TUI for Git
 			lazygit = {},

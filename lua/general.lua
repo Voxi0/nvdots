@@ -40,9 +40,6 @@ o.autowrite = false
 -- Faster completion
 o.updatetime = 300
 
--- Don't redraw during macros
-o.lazyredraw = true
-
 ---------------------
 --- Miscellaneous ---
 ---------------------

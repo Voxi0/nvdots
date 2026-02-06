@@ -86,6 +86,9 @@ inputs: {
           # File explorer
           fyler-nvim
 
+          # Git integration
+          gitsigns-nvim
+
           # Discord rich presence
           cord-nvim
         ];
