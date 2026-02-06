@@ -60,6 +60,18 @@ o.showmode = false
 ---------------------
 createAutoCmd = vim.api.nvim_create_autocmd
 
+-- Dynamic relative numbers (like LazyVim)
+createAutoCmd("InsertEnter", {
+    callback = function()
+        vim.opt.relativenumber = false
+    end,
+})
+createAutoCmd("InsertLeave", {
+    callback = function()
+        vim.opt.relativenumber = true
+    end,
+})
+
 -- Disable auto comments
 createAutoCmd("FileType", {
 	pattern = "*",

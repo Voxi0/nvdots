@@ -3,6 +3,37 @@ return {
 	{
 		"nvim-treesitter",
 		dep_of = "nvim-ts-autotag",
+		event = "BufReadPost",
+		after = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					----------------------------------------------
+					--- Tries to attach Treesitter to a buffer ---
+					----------------------------------------------
+					local function treesitterTryAttach(buffer, language)
+						-- Load parser for current language if it exists
+						if not vim.treesitter.language.add(language) then
+							return false
+						end
+
+						-- Enable syntax highlighting and other Treesitter features
+						vim.treesitter.start(buffer, language)
+					end
+
+					-------------------------------------------
+					--- Attach Treesitter to current buffer ---
+					-------------------------------------------
+					-- Check if Treesitter parser for buffer is available
+					local language = vim.treesitter.language.get_lang(args.match)
+					if not language then
+						return
+					end
+
+					-- Try attaching Treesitter to current buffer
+					treesitterTryAttach(args.buf, language)
+				end,
+			})
+		end,
 	},
 
 	-- Treesitter textobjects for more codeaware Neovim motions
@@ -24,6 +55,10 @@ return {
 		event = { "InsertEnter", "CmdlineEnter" },
 		after = function()
 			require("blink-cmp").setup({
+				-- Show function signature
+				signature = { enabled = true },
+
+				-- Keybindings
 				keymap = {
 					-- Get rid of all preset key-mappings
 					preset = "none",
