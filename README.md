@@ -1,52 +1,17 @@
 <h1 align="center">nvdots</h1>
 
-This is my personal [Neovim](https://neovim.io/) configuration exported as a package using [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules).
+neovim distro for nix users using [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules). read the [docs](https://nvdots.pages.dev/) to learn more. please note that the docs are still a WIP and i'm yet to document all the plugins/specs, keybindings, autocommands and such.
 
-Try it now! -> `nix run github:Voxi0/nvdots`
-
-## How it works
-[nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules) allows you to take a package and wrap it with extra configuration and packages and all while using the Nix module system along with some pre-built wrapper modules to make your life easier.
-
-I'm using this to create a Neovim package with all my configurations and such applied to it. Since it's just a package, it can be easily installed on anything with Nix and also extended further by simply wrapping it again with the extra plugins and configuration and all.
-
-## How to use nvdots
-- Add `nvdots` to flake inputs of course
-```nix
-nvdots = {
-  url = "github:Voxi0/nvdots";
-
-  # Use your flake's nixpkgs
-  inputs.nixpkgs.follows = "nixpkgs";
-};
+## try it
+first install Nix and then run the following command to temporarily try out nvdots. it looks complex because the two lines after `nix run` is making sure that cachix is being used or else you'd have to compile neovim and it's plugins and all from source which would take a while. binary caches are far more faster and convenient.
+```bash
+nix run github:Voxi0/nvdots \
+    --extra-trusted-public-keys nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs \
+    --extra-substituters https://nix-community.cachix.org
 ```
-- Add the package to `home.packages` or `environment.systemPackages` or whatever.
-```
-inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim
-```
-- Configure nvdots however you want by wrapping the package with your own stuff. Here's an example where I add some plugins and extra packages e.g. language servers on top of nvdots.
-```nix
-home.packages = [
-	(inputs.nvdots.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap ({pkgs, ...}: {
-		extraPackages = with pkgs; [
-			# Language servers
-			clang-tools # C/C++
-			nil # Nix
-			lua-language-server # Lua
-			astro-language-server # AstroJS - Webdev framework
 
-			# For the Wakatime plugin
-			wakatime-cli
-		];
-		specs.general = {
-			data = [pkgs.vimPlugins.vim-wakatime];
-			config = ''
-				-- Load Wakatime plugin
-				vim.cmd.packadd("vim-wakatime")
+i will soon find a way to allow non-nix users to use nvdots even though nvdots is primarily meant for nix users :)
 
-				-- Enable LSP configurations for whatever languages I want
-				vim.lsp.enable({ "lua_ls", "nil_ls", "clangd", "zls", "astro" })
-			'';
-		};
-	}))
-];
-```
+# acknowledgements
+- [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules) - For making it nice and easy to wrap Neovim with plugins and Lua configuration duh. this way I can keep nix and neovim stuff separate so I have the ability to make my configuration cross-platform even WITHOUT nix sooner or later in the future. but i mean right now, all of this is still cross-platform as long as you have nix installed of course.
+- [nvim-lite](https://github.com/radleylewis/nvim-lite) - For showing how to do a whole lot of things natively without any plugins. I discovered a bunch of useful options and handy autocommands thanks to this.
