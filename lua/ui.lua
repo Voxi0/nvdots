@@ -3,6 +3,8 @@ o = vim.opt
 --------------
 -- Visuals ---
 --------------
+o.termguicolors = true
+
 -- Line numbering
 o.number = true
 o.relativenumber = true

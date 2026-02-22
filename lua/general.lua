@@ -47,7 +47,7 @@ o.updatetime = 300
 o.mouse = "a"
 
 -- Use system clipboard
-o.clipboard = "unnamedplus"
+o.clipboard:append("unnamedplus")
 
 -- Spell checking
 o.spell = true
