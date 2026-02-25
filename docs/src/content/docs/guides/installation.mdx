@@ -6,7 +6,16 @@ sidebar:
 ---
 import { Steps } from "@astrojs/starlight/components";
 
-## How to use nvdots
+## Trying It Out
+Before you go ahead and install it on your system, you probably want to install nvdots temporarily to play around with it. Run the following command to create a temporary shell with nvdots installed. Note that you will be stuck using the defaults and can not customize the package with your own plugins/configuration.
+```nix
+nix run github:Voxi0/nvdots \
+    --extra-trusted-public-keys nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs \
+    --extra-substituters https://nix-community.cachix.org \
+    --experimental-features 'nix-command flakes'
+```
+
+## Installing On The System
 Add nvdots to your flake.
 ```nix
 nvdots = {
