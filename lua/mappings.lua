@@ -21,6 +21,10 @@ map("v", ">", ">gv", { desc = "Indent right" })
 -- Clear search highlights
 map("n", "<escape>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlights" })
 
+-- Scroll up/down half a page and then recenter the cursor on screen
+map("n", "<C-u>", "<C-u>zz", { desc = "Scroll up half a page" })
+map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down half a page" })
+
 -- Better movement in wrapped text
 map("n", "k", function()
 	return vim.v.count == 0 and "gk" or "k"
